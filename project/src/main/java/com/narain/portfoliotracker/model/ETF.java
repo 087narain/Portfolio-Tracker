@@ -18,8 +18,45 @@ public class ETF extends Asset {
 
     @Override
     public double getCurrentValue() {
-        
+        return quantity * purchasePrice;
     }
 
+    @Override
+    public String getType() {
+        return "ETF";
+    }
+
+    public String getBenchmarkIndex() {
+        return this.benchmarkIndex;
+    }
+
+    public void setBenchmarkIndex(String benchmarkIndex) {
+        this.benchmarkIndex = benchmarkIndex;
+    }
+
+    public double getExpenseRatio() {
+        return this.expenseRatio;
+    }
+
+    public void setExpenseRatio(double expenseRatio) {
+        this.expenseRatio = expenseRatio;
+    }
+
+    public double getDividendYield() {
+        return this.dividendYield;
+    }
+
+    public void setDividendYield(double dividendYield) {
+        this.dividendYield = dividendYield;
+    }
+
+    public String getProvider() {
+        return this.provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+ 
 }
 
