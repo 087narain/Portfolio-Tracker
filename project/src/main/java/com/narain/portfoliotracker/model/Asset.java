@@ -7,12 +7,14 @@ public abstract class Asset {
     protected int quantity;
     protected double purchasePrice;
     protected LocalDateTime purchaseTime;
+    protected String currency;
 
-    public Asset(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime) {
+    public Asset(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency) {
         this.ticker = ticker;
         this.quantity = quantity;
         this.purchasePrice = purchasePrice;
         this.purchaseTime = purchaseTime;
+        this.currency = currency;
     }
 
     public abstract double getCurrentValue();
@@ -48,5 +50,13 @@ public abstract class Asset {
 
     public void setPurchaseTime(LocalDateTime purchaseTime) {
         this.purchaseTime = purchaseTime;
+    }
+
+    public String getCurrency() { 
+        return this.currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
