@@ -9,15 +9,7 @@ public class Stock extends Asset {
         super(ticker, quantity, purchasePrice, purchaseTime, currency);
         this.currentPrice = currentPrice;
     }
-
-    public double getCurrentPrice() {
-        return this.currentPrice;
-    }
-
-    public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
+    
     @Override
     public double getCurrentValue() {
         return (currentPrice * quantity);
@@ -27,4 +19,13 @@ public class Stock extends Asset {
     public String getType() {
         return "Stock";
     }
+
+    public double getCurrentPrice() {
+        return this.currentPrice;
+    }
+
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
 }
