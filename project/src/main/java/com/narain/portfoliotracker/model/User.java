@@ -16,11 +16,21 @@ public class User {
         this.creationDate = LocalDateTime.now();
     }
 
-    public UUID getID() {
+    @Override
+    public String toString() {
+        return "User{" +
+           "id=" + id +
+           ", name='" + name + '\'' +
+           ", email='" + email + '\'' +
+           ", creationDate=" + creationDate +
+           '}'; 
+    }
+
+    public UUID getId() {
         return this.id;
     }
 
-    public void setID (UUID id) {
+    public void setId (UUID id) {
         this.id = id;
     }
 
@@ -38,6 +48,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return this.creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 
 }
