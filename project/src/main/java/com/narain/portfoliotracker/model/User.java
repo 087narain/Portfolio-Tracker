@@ -8,12 +8,14 @@ public class User {
     private String name;
     private String email;
     private LocalDateTime creationDate;
+    private Portfolio portfolio;
 
-    public User(String name, String email) {
+    public User(String name, String email, Portfolio portfolio) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.creationDate = LocalDateTime.now();
+        this.portfolio = portfolio;
     }
 
     @Override
@@ -52,6 +54,14 @@ public class User {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Portfolio getPortfolio() {
+        return this.portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 
 }
