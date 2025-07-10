@@ -12,11 +12,11 @@ import java.util.UUID;
 
 public class Portfolio {
     private String portfolioName;
-    private UUID userId;
+    private final UUID userId;
     private List<Asset> assets;
-    private LocalDateTime creationDate;
+    private final LocalDateTime creationDate;
     private double totalValue;
-    private Map<String, Double> assetTypeBreakdown;
+    private final Map<String, Double> assetTypeBreakdown;
     private double balance;
     private String currency;
 
@@ -105,7 +105,8 @@ public class Portfolio {
         for (Asset asset : assets) {
             total += asset.getCurrentValue();
         }
-        return total;
+        this.totalValue = total;
+        return this.totalValue;
     }
 
     public void putOrUpdate(String type, double value) {
