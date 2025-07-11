@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class User {
-    private UUID id;
+    private final UUID id;
     private String name;
     private String email;
     private LocalDateTime creationDate;
