@@ -31,7 +31,7 @@ public class MarketDataService {
             return Double.parseDouble(priceNode.asText());
         } catch (Exception e) {
             e.printStackTrace();
-            return -1.0; // Error case
+            return -1.0; 
         }
     }
 }
