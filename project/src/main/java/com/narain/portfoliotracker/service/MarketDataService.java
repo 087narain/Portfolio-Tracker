@@ -12,11 +12,15 @@ import com.narain.portfoliotracker.config.AlphaVantageConfig;
 public class MarketDataService {
 
     private final AlphaVantageConfig config;
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-    public MarketDataService(AlphaVantageConfig config) {
+    public MarketDataService(AlphaVantageConfig config,
+                             RestTemplate restTemplate,
+                             ObjectMapper objectMapper) {
         this.config = config;
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
     }
 
     public double getCurrentPrice(String symbol) {
