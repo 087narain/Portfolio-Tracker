@@ -12,14 +12,20 @@ import java.util.UUID;
 
 public class Portfolio {
     private String portfolioName;
-    private final UUID userId;
+    private UUID userId;
     private List<Asset> assets;
-    private final LocalDateTime creationDate;
+    private LocalDateTime creationDate;
     private double totalValue;
-    private final Map<String, Double> assetTypeBreakdown;
+    private Map<String, Double> assetTypeBreakdown;
     private double balance;
     private String currency;
-
+    
+    public Portfolio() {
+        this.userId = UUID.randomUUID();
+        this.creationDate = LocalDateTime.now();
+        this.assetTypeBreakdown = new HashMap<>();
+        this.assets = new ArrayList<>();
+    }
 
     public Portfolio(String portfolioName, LocalDateTime creationDate, double totalValue, double balance, String currency) {
         this.portfolioName = portfolioName;

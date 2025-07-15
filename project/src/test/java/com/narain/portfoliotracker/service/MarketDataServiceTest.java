@@ -5,12 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.when;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.narain.portfoliotracker.PortfolioTrackerApplication;
 import com.narain.portfoliotracker.config.AlphaVantageConfig;
 
+@SpringBootTest(classes = PortfolioTrackerApplication.class)
 public class MarketDataServiceTest {
     private MarketDataService marketDataService;
     private AlphaVantageConfig mockConfig;

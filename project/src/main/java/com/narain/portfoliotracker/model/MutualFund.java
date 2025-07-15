@@ -7,6 +7,10 @@ public class MutualFund extends Asset {
     private double expenseRatio;
     private double nav;
 
+    public MutualFund() {
+        super();
+    }
+    
     public MutualFund(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency, String fundManager, double expenseRatio, double nav) {
         super(ticker, quantity, purchasePrice, purchaseTime, currency);
         this.fundManager = fundManager;

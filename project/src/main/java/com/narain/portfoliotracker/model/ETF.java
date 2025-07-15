@@ -8,6 +8,10 @@ public class ETF extends Asset {
     private double dividendYield;
     private String provider;
 
+    public ETF() {
+        super();
+    }
+
     public ETF(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency, String benchmarkIndex, double expenseRatio, double dividendYield, String provider) {
         super(ticker, quantity, purchasePrice, purchaseTime, currency);
         this.benchmarkIndex = benchmarkIndex;

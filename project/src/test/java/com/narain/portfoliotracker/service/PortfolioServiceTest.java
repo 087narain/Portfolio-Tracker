@@ -7,11 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import com.narain.portfoliotracker.PortfolioTrackerApplication;
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.Portfolio;
 
-
+@SpringBootTest(classes = PortfolioTrackerApplication.class)
 class PortfolioServiceTest {
     private PortfolioService portfolioService;
     private Portfolio testPortfolio;

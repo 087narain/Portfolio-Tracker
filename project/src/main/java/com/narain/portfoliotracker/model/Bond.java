@@ -9,6 +9,10 @@ public class Bond extends Asset{
     private double faceValue;
     private String issuer;
 
+    public Bond() {
+        super();
+    }
+
     public Bond(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency, LocalDate maturityDate, double couponRate, double faceValue, String issuer) {
         super(ticker, quantity, purchasePrice, purchaseTime, currency);
         this.maturityDate = maturityDate;

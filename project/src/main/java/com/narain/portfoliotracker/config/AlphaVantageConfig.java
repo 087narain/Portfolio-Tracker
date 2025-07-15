@@ -1,12 +1,10 @@
 package com.narain.portfoliotracker.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Configuration
+@ConfigurationProperties(prefix = "alphavantage")
 public class AlphaVantageConfig {
-    
-    @Value("${alphavantage.api.key}")
+
     private String apiKey;
 
     public String getApiKey() {

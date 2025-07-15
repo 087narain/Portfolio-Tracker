@@ -2,12 +2,31 @@ package com.narain.portfoliotracker.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME,
+  include = JsonTypeInfo.As.PROPERTY,
+  property = "type"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Stock.class, name = "Stock"),
+    @JsonSubTypes.Type(value = ETF.class, name = "ETF"),
+    @JsonSubTypes.Type(value = CryptoAsset.class, name = "Crypto"),
+    @JsonSubTypes.Type(value = MutualFund.class, name = "MutualFund"),
+    @JsonSubTypes.Type(value = Bond.class, name = "Bond"),
+})
 public abstract class Asset {
     protected String ticker;
     protected int quantity;
     protected double purchasePrice;
     protected LocalDateTime purchaseTime;
     protected String currency;
+
+    public Asset() {
+        // Default constructor for serialization/deserialization
+    }
 
     public Asset(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency) {
         this.ticker = ticker;

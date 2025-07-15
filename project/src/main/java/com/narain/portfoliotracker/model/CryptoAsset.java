@@ -7,6 +7,10 @@ public class CryptoAsset extends Asset {
     private String exchange;
     private String walletAddress;
 
+    public CryptoAsset() {
+        super();
+    }
+
     public CryptoAsset(String ticker, int quantity, double purchasePrice, LocalDateTime purchaseTime, String currency, String coinName, String exchange, String walletAddress) {
         super(ticker, quantity, purchasePrice, purchaseTime, currency);
         this.coinName = coinName;
