@@ -53,13 +53,13 @@ class PortfolioServiceTest {
     @Test
     void testGetTotalPortfolioValue() {
         double value = portfolioService.getTotalPortfolioValue(testPortfolio);
-        assertEquals(3600.0, value - testPortfolio.getBalance(), 0.01);
+        assertEquals(3600.0, value, 0.01);
     }
 
     @Test
     void testGetPortfolioValueByType() {
         double stockValue = portfolioService.getPortfolioValueByType(testPortfolio, "Stock");
-        assertEquals(2600.0, stockValue - testPortfolio.getBalance(), 0.01);
+        assertEquals(2600.0, stockValue, 0.01);
     }
 
     @Test
