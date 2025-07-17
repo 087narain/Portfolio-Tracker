@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.AssetRequest;
 import com.narain.portfoliotracker.model.Portfolio;
@@ -29,8 +30,9 @@ public class PortfolioController {
     private PortfolioService portfolioService;
 
     @PostMapping("/total")
-    public double getTotalValue(@RequestBody Portfolio portfolio) {
-        return portfolioService.getTotalPortfolioValue(portfolio);
+    public PorfolioValueWrapper getTotalValue(@RequestBody Portfolio portfolio) {
+        double total = portfolioService.getTotalPortfolioValue(portfolio);
+        return new PorfolioValueWrapper(total);
     }
 
     @PostMapping("/live")

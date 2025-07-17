@@ -3,7 +3,7 @@ import { getTotalValue } from './api/portfolio';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchValue = async () => {
@@ -32,11 +32,11 @@ function App() {
       };
 
       try {
-        const response = await getTotalValue(portfolio);
-        setTotalValue(response.totalValue); 
+        const result = await getTotalValue(portfolio);
+        setTotalValue(result.data.totalValue);  // <- set value
       } catch (err) {
         console.error("API error:", err);
-        setError("Failed to fetch portfolio value.");
+        setError(true);
       }
     };
 
@@ -46,9 +46,9 @@ function App() {
   return (
     <div>
       <h1>Portfolio Tracker</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p>Failed to fetch portfolio value.</p>}
       {totalValue !== null ? (
-        <p>Total Portfolio Value: ${totalValue.toFixed(2)}</p>
+        <p>Total Portfolio Value: ${totalValue}</p>
       ) : (
         <p>Loading...</p>
       )}
