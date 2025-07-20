@@ -33,7 +33,7 @@ export default function AssetForm({ onSubmit }) {
             ticker: ticker.trim().toUpperCase(),
             quantity: parseFloat(quantity),
             purchasePrice: parseFloat(purchasePrice),
-            purchaseTime,
+            purchaseTime: `${purchaseTime}T00:00:00`,
             type
         };
 
@@ -48,10 +48,10 @@ export default function AssetForm({ onSubmit }) {
 
     return(
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 w-full max-w-xl">
-            <h2 className="text-2xl font-bold mb-4">Add New Asset</h2>
+            <h2 className="text-2xl font-bold mb-4">Add New Asset 📈</h2>
 
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2" htmlFor="ticker">Ticker Symbol</label>
+                <label className="block text-gray-700 mb-2" htmlFor="ticker">Ticker</label>
                 <input
                     type="text"
                     id="ticker"
@@ -75,7 +75,7 @@ export default function AssetForm({ onSubmit }) {
             </div>
 
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2" htmlFor="purchasePrice">Purchase Price (USD)</label>
+                <label className="block text-gray-700 mb-2" htmlFor="purchasePrice">Purchase Price</label>
                 <input
                     type="number"
                     id="purchasePrice"
@@ -87,14 +87,12 @@ export default function AssetForm({ onSubmit }) {
             </div>
 
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2" htmlFor="purchaseTime">Purchase Time</label>
+                <label className="block text-gray-700 mb-2" htmlFor="purchaseTime">Date of Purchase</label>
                 <input
-                    type="datetime-local"
-                    id="purchaseTime"
+                    type="date"
                     value={purchaseTime}
                     onChange={(e) => setPurchaseTime(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    required
+                    className="w-full border p-2 rounded mt-1 text-gray-900"
                 />
             </div>
 

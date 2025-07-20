@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class Portfolio {
     private String portfolioName;
-    private UUID userId;
+    private UUID id;
     private List<Asset> assets;
     private LocalDateTime creationDate;
     private double totalValue;
@@ -21,7 +21,7 @@ public class Portfolio {
     private String currency;
     
     public Portfolio() {
-        this.userId = UUID.randomUUID();
+        this.id = UUID.randomUUID();
         this.creationDate = LocalDateTime.now();
         this.assetTypeBreakdown = new HashMap<>();
         this.assets = new ArrayList<>();
@@ -29,7 +29,7 @@ public class Portfolio {
 
     public Portfolio(String portfolioName, LocalDateTime creationDate, double totalValue, double balance, String currency) {
         this.portfolioName = portfolioName;
-        this.userId = UUID.randomUUID();
+        this.id = UUID.randomUUID();
         this.assets = new ArrayList<>();
         this.creationDate = creationDate;
         this.totalValue = totalValue;
@@ -41,7 +41,7 @@ public class Portfolio {
     public String getPortflioName() { return this.portfolioName; }
     public void setPortfolioName(String portfolioName) { this.portfolioName = portfolioName; }
 
-    public UUID getUserId() { return this.userId; }
+    public UUID getId() { return this.id; }
 
     public void addAsset(Asset asset) { assets.add(asset); }
 

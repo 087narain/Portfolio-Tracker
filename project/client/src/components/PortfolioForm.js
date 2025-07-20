@@ -37,7 +37,7 @@ export default function PortfolioForm({ onSubmit }) {
 
     return(
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 w-full max-w-xl">
-            <h2 className="text-2xl font-bold mb-4">Create New Portfolio</h2>
+            <h2 className="text-2xl font-bold mb-4">Create New Portfolio 📒</h2>
 
             <div className="mb-4">
                 <label className="block text-gray-700 mb-2" htmlFor="portfolioName">Portfolio Name</label>
@@ -72,8 +72,8 @@ export default function PortfolioForm({ onSubmit }) {
                     className="w-full p-2 border border-gray-300 rounded"
                 >
                     <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
                     <option value="GBP">GBP</option>
+                    <option value="EUR">EUR</option>
                     <option value="JPY">JPY</option>
                     <option value="AUD">AUD</option>
                     <option value="CAD">CAD</option>

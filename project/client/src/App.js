@@ -75,27 +75,27 @@ function App() {
   return (
     <div className='min-h-screen bg-gray-100 flex flex-col items-center justify-between p-6'>
       <Header />
-      <main className='mt-6 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg'>
+      <main className='mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg'>
         {error ? (
           <div className="text-red-500 text-center bg-red-100 p-4 rounded">Failed to reach portfolio value.</div>  
         ) : totalValue === null ? (
           <div className='text-center text-lg'>Loading...</div>
         ) : (
           <>
-            <div className='min-h-screen bg-gray-100 p-6 flex flex-col items-center space-y-8 mt-2'>
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
+            <div className='min-h-screen bg-gray-100 p-6 flex flex-col items-center mt-2 space-y-8'>
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <PortfolioSummary portfolioName={portfolio.portfolioName} totalValue={totalValue} />
               </div>
 
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <AssetList assets={portfolio.assets} />
               </div>
 
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <PortfolioForm onSubmit={handleNewPortfolio} />
               </div>
 
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <AssetForm onSubmit={handleNewAsset} />
               </div>
             </div>

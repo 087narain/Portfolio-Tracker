@@ -1,29 +1,31 @@
 package com.narain.portfoliotracker.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
     private final UUID id;
-    private String name;
-    private String email;
+    private String username;
+    private String password;
     private LocalDateTime creationDate;
-    private Portfolio portfolio;
+    private final List<Portfolio> portfolios;
 
-    public User(String name, String email, Portfolio portfolio) {
+    public User(String username, String password) {
         this.id = UUID.randomUUID();
-        this.name = name;
-        this.email = email;
+        this.username = username;
+        this.password = password;
         this.creationDate = LocalDateTime.now();
-        this.portfolio = portfolio;
+        this.portfolios = new ArrayList<>();
     }
 
     @Override
     public String toString() {
         return "User{" +
            "id=" + id +
-           ", name='" + name + '\'' +
-           ", email='" + email + '\'' +
+           ", name='" + username + '\'' +
+           ", email='" + password + '\'' +
            ", creationDate=" + creationDate +
            '}'; 
     }
@@ -32,20 +34,20 @@ public class User {
         return this.id;
     }
 
-    public String getName()  {
-        return this.name;
+    public String getUsername()  {
+        return this.username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getPwd() {
+        return this.password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPwd(String password) {
+        this.password = password;
     }
 
     public LocalDateTime getCreationDate() {
@@ -56,12 +58,54 @@ public class User {
         this.creationDate = creationDate;
     }
 
-    public Portfolio getPortfolio() {
-        return this.portfolio;
+    public List<Portfolio> getPortfolios() {
+        return this.portfolios;
     }
 
-    public void setPortfolio(Portfolio portfolio) {
-        this.portfolio = portfolio;
+    public void addPortfolio(Portfolio portfolio) {
+        this.portfolios.add(portfolio);
+    }
+
+    public boolean removePortfolioByName(String portfolioName) {
+        return this.portfolios.removeIf(p -> p.getPortflioName().equals(portfolioName));
+    }
+
+    public Portfolio getPortfolioByName(String portfolioName) {
+        for (Portfolio portfolio : this.portfolios) {
+            if (portfolio.getPortflioName().equals(portfolioName)) {
+                return portfolio;
+            }
+        }
+        return null;
+    }
+
+    public boolean containsPortfolio(String portfolioName) {
+        return this.portfolios.stream().anyMatch(p -> p.getPortflioName().equals(portfolioName));
+    }
+
+    public boolean containsPortfolio(Portfolio portfolio) {
+        return this.portfolios.contains(portfolio);
+    }
+
+    public void clearPortfolios() {
+        this.portfolios.clear();
+    }
+
+    public int getPortfolioCount() {
+        return this.portfolios.size();
+    }
+
+    public Portfolio getPortfolioById(UUID portfolioId) {
+        for (Portfolio portfolio : this.portfolios) {
+            if (portfolio.getId().equals(portfolioId)) {
+                return portfolio;
+            }
+        }
+        return null;
+    }
+
+    public boolean removePortfolioById(UUID portfolioId) {
+        return this.portfolios.removeIf(p -> p.getId().equals(portfolioId));
     }
 
 }
