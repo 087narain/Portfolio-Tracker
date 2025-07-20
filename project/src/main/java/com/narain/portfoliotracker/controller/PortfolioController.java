@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +25,11 @@ import com.narain.portfoliotracker.service.PortfolioService;
 public class PortfolioController {
     
     private PortfolioService portfolioService;
+
+    public PortfolioController(PortfolioService portfolioService) {
+        System.out.println("PortfolioController created with PortfolioService: " + portfolioService);
+        this.portfolioService = portfolioService;
+    }
 
     @PostMapping("/total")
     public PorfolioValueWrapper getTotalValue(@RequestBody Portfolio portfolio) {
@@ -64,7 +68,7 @@ public class PortfolioController {
         }
     }
 
-    @GetMapping("/all-assets")
+    @PostMapping("/all-assets")
     public ResponseEntity<Portfolio> getAllAssets(@RequestBody Portfolio portfolio) {
         Portfolio responsePortfolio = new Portfolio(portfolio.getPortflioName(), portfolio.getCreationDate(), 
                                                      portfolio.getTotalValue(), portfolio.getBalance(), 
@@ -77,7 +81,7 @@ public class PortfolioController {
         return ResponseEntity.ok(responsePortfolio);
     }
 
-    @GetMapping("/asset-type-breakdown")
+    @PostMapping("/asset-type-breakdown")
     public ResponseEntity<String> getAssetTypeBreakdown(@RequestBody Portfolio portfolio) {
         StringBuilder breakdown = new StringBuilder();
         for (String type : portfolio.getAllAssetTypes()) {

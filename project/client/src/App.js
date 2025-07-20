@@ -5,22 +5,29 @@ import PortfolioSummary from './components/PortfolioSummary';
 import AssetList from './components/AssetList';
 import { getTotalValue } from './api/portfolio';
 import PortfolioForm from './components/PortfolioForm';
+import AssetForm from './components/AssetForm';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
   const [error, setError] = useState(false);
-  const [newPortfolio, setNewPortfolio] = useState(null);
 
   const handleNewPortfolio = (newPortfolioData) => {
-    setNewPortfolio({
+    setPortfolio({
       ...newPortfolioData,
+      creationDate: new Date().toISOString(),
       totalValue: 0.0,
       assets: []
     });
   };
 
+  const handleNewAsset = (newAssetData) => {
+    setPortfolio(prevPortfolio => ({
+      ...prevPortfolio,
+      assets: [...prevPortfolio.assets, newAssetData],
+    }));
+  }
 
-  const portfolio = {
+  const [portfolio, setPortfolio] = useState({
     portfolioName: "Dummy Portfolio",
     creationDate: "2025-07-15T12:00:00",
     totalValue: 0.0,
@@ -31,7 +38,7 @@ function App() {
         ticker: "AAPL",
         quantity: 10,
         purchasePrice: 150.0,
-        purchaseTime: "2025-07- 14T10:00:00",
+        purchaseTime: "2025-07-14T10:00:00",
         type: "Stock"
       },
       {
@@ -42,11 +49,17 @@ function App() {
         type: "Stock"
       }
     ]
-  };
+  });
 
   useEffect(() => {
+
+    if (!portfolio || !portfolio.assets || portfolio.assets.length === 0) {
+      return;
+    }
+
     const fetchValue = async () => {
       try {
+        console.log("Sending portfolio:", portfolio);
         const result = await getTotalValue(portfolio);
         console.log("Axios response:", result);
         setTotalValue(result.data.totalValue);
@@ -57,7 +70,7 @@ function App() {
     };
 
     fetchValue();
-  }, []);
+  }, [portfolio]);
 
   return (
     <div className='min-h-screen bg-gray-100 flex flex-col items-center justify-between p-6'>
@@ -80,6 +93,10 @@ function App() {
 
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
                 <PortfolioForm onSubmit={handleNewPortfolio} />
+              </div>
+
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
+                <AssetForm onSubmit={handleNewAsset} />
               </div>
             </div>
           </>
