@@ -8,14 +8,14 @@ import java.util.UUID;
 public class User {
     private final UUID id;
     private String username;
-    private String password;
+    private String passwordHash;
     private LocalDateTime creationDate;
     private final List<Portfolio> portfolios;
 
-    public User(String username, String password) {
+    public User(String username, String passwordHash) {
         this.id = UUID.randomUUID();
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.creationDate = LocalDateTime.now();
         this.portfolios = new ArrayList<>();
     }
@@ -25,7 +25,6 @@ public class User {
         return "User{" +
            "id=" + id +
            ", name='" + username + '\'' +
-           ", email='" + password + '\'' +
            ", creationDate=" + creationDate +
            '}'; 
     }
@@ -42,12 +41,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPwd() {
-        return this.password;
+    public String getPasswordHash() {
+        return this.passwordHash;
     }
 
-    public void setPwd(String password) {
-        this.password = password;
+    public void setPasswordHash(String password) {
+        this.passwordHash = passwordHash;
     }
 
     public LocalDateTime getCreationDate() {
