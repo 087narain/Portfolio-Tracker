@@ -18,5 +18,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByUsername(String username);
 
     // Method to delete a user by ID
+    @Override
     void deleteById(UUID id);
 }
