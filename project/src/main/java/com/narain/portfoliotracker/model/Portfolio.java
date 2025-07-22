@@ -76,6 +76,15 @@ public class Portfolio {
 
     public void addAsset(Asset asset) { assets.add(asset); }
 
+    public User getUser() { return this.user; }
+    
+    public void setUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        this.user = user;
+    }
+
     public boolean removeAssetByTicker(String ticker) {
         Iterator<Asset> iterator = assets.iterator();
         while (iterator.hasNext()) {
