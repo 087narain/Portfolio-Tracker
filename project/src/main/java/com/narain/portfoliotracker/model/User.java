@@ -30,7 +30,7 @@ public class User {
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private final List<Portfolio> portfolios = new ArrayList<>();
 
     @Version

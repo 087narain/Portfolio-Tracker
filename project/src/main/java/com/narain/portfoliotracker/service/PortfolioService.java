@@ -8,12 +8,30 @@ import org.springframework.stereotype.Service;
 
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.Portfolio;
+import com.narain.portfoliotracker.model.User;
+import com.narain.portfoliotracker.repository.PortfolioRepository;
 
 @Service
 public class PortfolioService {
 
     @Autowired
     private MarketDataService marketDataService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PortfolioRepository portfolioRepository;
+
+    public Portfolio createPortfolioForUser(Portfolio portfolio, String user) {
+        User existingUser = userService.findUserByUsername(user)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        portfolio.setUser(existingUser);
+        existingUser.getPortfolios().add(portfolio);
+
+        return portfolioRepository.save(portfolio);
+    }
 
     public double getLiveValue(Asset asset) {
         double currentPrice = marketDataService.getCurrentPrice(asset.getTicker());
