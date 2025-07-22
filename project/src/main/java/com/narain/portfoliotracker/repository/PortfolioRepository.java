@@ -10,4 +10,6 @@ import com.narain.portfoliotracker.model.User;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, UUID> {
     List<Portfolio> findByUser(User user);    
+
+    List<Portfolio> findByUserName(String username);
 }
