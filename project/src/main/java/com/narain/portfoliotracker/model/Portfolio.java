@@ -10,12 +10,43 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.OneToMany;
+@Entity
 public class Portfolio {
-    private String portfolioName;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
+
+    @Id
     private UUID id;
+    
+    private String portfolioName;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id") 
     private List<Asset> assets;
+    
     private LocalDateTime creationDate;
     private double totalValue;
+   
+    @ElementCollection
+    @CollectionTable(name = "portfolio_asset_type_breakdown", joinColumns = @JoinColumn(name = "portfolio_id"))
+    @MapKeyColumn(name = "asset_type")
+    @Column(name = "value")
     private Map<String, Double> assetTypeBreakdown;
     private double balance;
     private String currency;

@@ -1,9 +1,17 @@
 package com.narain.portfoliotracker.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
 @JsonTypeInfo(
   use = JsonTypeInfo.Id.NAME,
@@ -17,7 +25,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = MutualFund.class, name = "MutualFund"),
     @JsonSubTypes.Type(value = Bond.class, name = "Bond"),
 })
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Asset {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID) // or AUTO, depending on your setup
+    protected UUID id;
+    
     protected String ticker;
     protected int quantity;
     protected double purchasePrice;

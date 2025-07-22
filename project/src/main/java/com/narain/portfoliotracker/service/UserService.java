@@ -1,5 +1,8 @@
 package com.narain.portfoliotracker.service;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +12,10 @@ import com.narain.portfoliotracker.repository.UserRepository;
 @Service
 public class UserService {
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
     private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -18,8 +23,8 @@ public class UserService {
 
     public User registerUser(String username, String rawPassword) {
         String hashedPassword = passwordEncoder.encode(rawPassword);
-
         User user = new User(username, hashedPassword);
+        
         return userRepository.save(user);
     }
 
@@ -27,8 +32,7 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, user.getPasswordHash());
     }
 
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

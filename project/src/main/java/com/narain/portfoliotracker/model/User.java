@@ -5,19 +5,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+
+@Entity
+@Table(name = "users")
 public class User {
-    private final UUID id;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
+
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
-    private final List<Portfolio> portfolios;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Portfolio> portfolios = new ArrayList<>();
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public User() {}
 
     public User(String username, String passwordHash) {
-        this.id = UUID.randomUUID();
         this.username = username;
         this.passwordHash = passwordHash;
         this.creationDate = LocalDateTime.now();
-        this.portfolios = new ArrayList<>();
     }
 
     @Override
@@ -45,12 +70,20 @@ public class User {
         return this.passwordHash;
     }
 
-    public void setPasswordHash(String password) {
+    public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
     public LocalDateTime getCreationDate() {
         return this.creationDate;
+    }
+
+    public Long getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
