@@ -122,4 +122,18 @@ public class PortfolioService {
         }
         return assetValues;
     }
+
+    public Portfolio updatePortfolio(UUID id, Portfolio updatedData) {
+        Portfolio existing = portfolioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Portfolio not found"));
+
+        existing.setPortfolioName(updatedData.getPortflioName());
+        existing.setBalance(updatedData.getBalance());
+        existing.setCurrency(updatedData.getCurrency());
+        existing.setCreationDate(updatedData.getCreationDate());
+        existing.setAssets(updatedData.getAllAssets());
+        existing.setTotalValue(updatedData.getTotalValue());
+        existing.setAssetTypeBreakdown(updatedData.getAssetTypeBreakdown());
+        
+        return portfolioRepository.save(existing);
+    }
 }

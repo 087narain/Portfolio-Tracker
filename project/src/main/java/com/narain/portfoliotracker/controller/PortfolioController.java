@@ -64,7 +64,7 @@ public class PortfolioController {
         }
     }
     @DeleteMapping("/removed-asset/{ticker}")
-    public ResponseEntity<String> removeAsset(@RequestBody Portfolio portfolio, UUID portfolioId, @PathVariable String ticker, Authentication authentication) {
+    public ResponseEntity<String> removeAsset(@RequestBody Portfolio portfolio, @PathVariable UUID portfolioId, @PathVariable String ticker, Authentication authentication) {
         String username = authentication.getName();
         if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorised access to this resource.");
@@ -79,7 +79,7 @@ public class PortfolioController {
     }
 
     @PostMapping("/asset/{ticker}")
-    public ResponseEntity<Asset> getAssetByTicker(@RequestBody Portfolio portfolio, @RequestBody String ticker) {
+    public ResponseEntity<Asset> getAssetByTicker(@RequestBody Portfolio portfolio, @PathVariable String ticker) {
         Asset asset = portfolioService.getAssetByTicker(portfolio, ticker);
         if (asset != null) {
             return ResponseEntity.ok(asset);
