@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.AccessDeniedException; 
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
 import com.narain.portfoliotracker.model.Asset;
@@ -154,6 +155,24 @@ public class PortfolioController {
                                                      Authentication authentication) {
         String username = authentication.getName();
         Portfolio updatedPortfolio = portfolioService.updatePortfolio(portfolioId, updatedData, username);
+        return ResponseEntity.ok(updatedPortfolio);
+    }
+
+    @PutMapping("/update-asset/{portfolioId}")
+    public ResponseEntity<Portfolio> updateAssetInPortfolio(@PathVariable UUID portfolioId, 
+                                                             @RequestBody Asset asset, 
+                                                             Authentication authentication) {
+        String username = authentication.getName();
+
+        if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorised access to this portfolio.");
+        }
+
+        if (!portfolioService.portfolioExists(portfolioId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Portfolio not found.");
+        }
+
+        boolean updatedPortfolio = portfolioService.updateAssetInPortfolio(portfolioId, asset, username);
         return ResponseEntity.ok(updatedPortfolio);
     }
 

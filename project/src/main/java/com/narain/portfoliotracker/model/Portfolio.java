@@ -108,6 +108,14 @@ public class Portfolio {
 
     public List<Asset> getAllAssets() { return assets; }
 
+    public void setAssets(List<Asset> assets) {
+        if (assets == null) {
+            throw new IllegalArgumentException("Assets list cannot be null");
+        }
+        this.assets = assets;
+        recalculateFromAssets(assets);
+    }
+
     public double getTotalValueByType(String type) {
         double netValue = 0;
 
@@ -146,6 +154,13 @@ public class Portfolio {
 
     public LocalDateTime getCreationDate() { return this.creationDate; }
 
+    public void setCreationDate() {
+        if (creationDate == null) {
+            throw new IllegalArgumentException("Creation date cannot be null");
+        }
+        this.creationDate = LocalDateTime.now();
+    }
+
     public double getTotalValue() {
         double total = 0;
         for (Asset asset : assets) {
@@ -153,6 +168,10 @@ public class Portfolio {
         }
         this.totalValue = total;
         return this.totalValue;
+    }
+
+    public void setTotalValue(double totalValue) {
+        this.totalValue = totalValue;
     }
 
     public void putOrUpdate(String type, double value) {
@@ -214,6 +233,17 @@ public class Portfolio {
             throw new IllegalArgumentException("Currency cannot be null or empty");
         }
         this.currency = currency;
+    }
+
+    public Map<String, Double> getAssetTypeBreakdown() {
+        return assetTypeBreakdown;
+    }
+
+    public void setAssetTypeBreakdown(Map<String, Double> assetTypeBreakdown) {
+        if (assetTypeBreakdown == null) {
+            throw new IllegalArgumentException("Asset type breakdown cannot be null");
+        }
+        this.assetTypeBreakdown = assetTypeBreakdown;
     }
 
     public void clear() {

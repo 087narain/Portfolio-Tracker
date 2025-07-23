@@ -129,11 +129,30 @@ public class PortfolioService {
         existing.setPortfolioName(updatedData.getPortflioName());
         existing.setBalance(updatedData.getBalance());
         existing.setCurrency(updatedData.getCurrency());
-        existing.setCreationDate(updatedData.getCreationDate());
+        existing.setCreationDate();
         existing.setAssets(updatedData.getAllAssets());
         existing.setTotalValue(updatedData.getTotalValue());
         existing.setAssetTypeBreakdown(updatedData.getAssetTypeBreakdown());
         
         return portfolioRepository.save(existing);
     }
+
+    public boolean updateAssetInPortfolio(UUID id, String ticker, Asset updatedAsset) {
+        Portfolio portfolio = portfolioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Portfolio not found"));
+        
+        Asset existingAsset = portfolio.getAssetByTicker(ticker);
+        if (existingAsset == null) {
+            return false;  
+        }
+
+        existingAsset.setQuantity(updatedAsset.getQuantity());
+        existingAsset.setPurchasePrice(updatedAsset.getPurchasePrice());
+        existingAsset.setTicker(updatedAsset.getTicker());
+        existingAsset.setTicker(updatedAsset.getTicker());
+        existingAsset.setCurrency(updatedAsset.getCurrency());
+
+        portfolioRepository.save(portfolio);
+        return true;
+    }
+
 }
