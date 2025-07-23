@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.narain.portfoliotracker.dto.AlphaVantageResponse;
+
 @Service 
 public class AlphaVantageService {
 
@@ -17,12 +19,12 @@ public class AlphaVantageService {
         this.restTemplate = restTemplate;
     }
     
-    public String getETFData(String symbol) {
+    public AlphaVantageResponse getETFData(String symbol) {
         String url = String.format("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s", symbol, apiKey);
         try {
             String response = restTemplate.getForObject(url, String.class);
             System.out.println("AlphaVantage response:\n" + response);
-            return response;
+            return restTemplate.getForObject(url, AlphaVantageResponse.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Failed to fetch data from Alpha Vantage", e);
         }
