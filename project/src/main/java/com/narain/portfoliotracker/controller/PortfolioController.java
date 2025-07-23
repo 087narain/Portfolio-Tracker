@@ -147,4 +147,14 @@ public class PortfolioController {
 
         return ResponseEntity.ok(portfolios);
     } 
+
+    @PutMapping("/update/{portfolioId}")
+    public ResponseEntity<Portfolio> updatePortfolio(@PathVariable UUID portfolioId, 
+                                                     @RequestBody Portfolio updatedData, 
+                                                     Authentication authentication) {
+        String username = authentication.getName();
+        Portfolio updatedPortfolio = portfolioService.updatePortfolio(portfolioId, updatedData, username);
+        return ResponseEntity.ok(updatedPortfolio);
+    }
+
 }
