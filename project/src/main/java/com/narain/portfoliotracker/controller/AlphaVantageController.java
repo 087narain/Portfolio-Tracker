@@ -3,6 +3,7 @@ package com.narain.portfoliotracker.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ public class AlphaVantageController {
     private AlphaVantageService alphaVantageService;
 
     @GetMapping("/etf/{symbol}")
-    public ResponseEntity<String> getETFData(String symbol) {
+    public ResponseEntity<String> getETFData(@PathVariable String symbol) {
         String data = alphaVantageService.getETFData(symbol);
 
         return ResponseEntity.ok(data);

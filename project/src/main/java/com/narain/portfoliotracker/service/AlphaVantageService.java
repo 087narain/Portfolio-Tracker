@@ -11,12 +11,18 @@ public class AlphaVantageService {
     @Value("${alphavantage.apiKey}")
     private String apiKey;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public AlphaVantageService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
     
     public String getETFData(String symbol) {
         String url = String.format("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s", symbol, apiKey);
         try {
-            return restTemplate.getForObject(url, String.class);
+            String response = restTemplate.getForObject(url, String.class);
+            System.out.println("AlphaVantage response:\n" + response);
+            return response;
         } catch (RestClientException e) {
             throw new RuntimeException("Failed to fetch data from Alpha Vantage", e);
         }
