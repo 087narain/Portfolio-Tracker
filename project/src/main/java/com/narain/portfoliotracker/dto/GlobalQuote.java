@@ -4,36 +4,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GlobalQuote {
 
-    @JsonProperty("01. symbol")
+    @JsonProperty("symbol")
     private String symbol;
 
-    @JsonProperty("02. open")
+    @JsonProperty("open")
     private String open;
 
-    @JsonProperty("03. high")
+    @JsonProperty("high")
     private String high;
 
-    @JsonProperty("04. low")
+    @JsonProperty("low")
     private String low;
 
-    @JsonProperty("05. price")
+    @JsonProperty("price")
     private String price;
 
-    @JsonProperty("06. volume")
+    @JsonProperty("volume")
     private String volume;
 
-    @JsonProperty("07. latest trading day")
+    @JsonProperty("latest-trading-day")
     private String latestTradingDay;
 
-    @JsonProperty("08. previous close")
+    @JsonProperty("previous-close")
     private String previousClose;
 
-    @JsonProperty("09. change")
+    @JsonProperty("change")
     private String change;
 
-    @JsonProperty("10. change percent")
+    @JsonProperty("change-percent")
     private String changePercent;
 
+    public GlobalQuote() {
+        // Default constructor
+    }
 
     public String getSymbol() {
         return symbol;
@@ -105,6 +108,30 @@ public class GlobalQuote {
 
     public void setChangePercent(String changePercent) {
         this.changePercent = changePercent;
+    }
+
+    public void setLatestTradingDay(String latestTradingDay) {
+    this.latestTradingDay = latestTradingDay;
+    }
+
+    public void setPreviousClose(String previousClose) {
+        this.previousClose = previousClose;
+    }
+
+    @Override
+    public String toString() {
+        return "GlobalQuote{" +
+            "symbol='" + symbol + '\'' +
+            ", open='" + open + '\'' +
+            ", high='" + high + '\'' +
+            ", low='" + low + '\'' +
+            ", price='" + price + '\'' +
+            ", volume='" + volume + '\'' +
+            ", latestTradingDay='" + latestTradingDay + '\'' +
+            ", previousClose='" + previousClose + '\'' +
+            ", change='" + change + '\'' +
+            ", changePercent='" + changePercent + '\'' +
+            '}';
     }
 
 }

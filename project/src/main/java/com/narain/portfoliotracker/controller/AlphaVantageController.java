@@ -21,6 +21,7 @@ public class AlphaVantageController {
     @GetMapping("/etf/{symbol}")
     public ResponseEntity<GlobalQuote> getETFData(@PathVariable String symbol) {
         AlphaVantageResponse data = alphaVantageService.getETFData(symbol);
+        System.out.println("GlobalQuote to return: " + data.getGlobalQuote());
         return ResponseEntity.ok(data.getGlobalQuote());
     }
 }
