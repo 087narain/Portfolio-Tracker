@@ -79,6 +79,10 @@ public class PortfolioService {
         return totalValue + portfolio.getBalance();
     }
 
+    public boolean getPortfolioById(UUID id) {
+        return portfolioRepository.existsById(id);
+    }
+
     public double getPortfolioValueByType(Portfolio portfolio, String assetType) {
         double totalValue = 0.0;
         for (Asset asset : portfolio.getAllAssets()) {
@@ -137,22 +141,30 @@ public class PortfolioService {
         return portfolioRepository.save(existing);
     }
 
-    public boolean updateAssetInPortfolio(UUID id, String ticker, Asset updatedAsset) {
+    public Portfolio updateAssetInPortfolio(UUID id, String ticker, Asset updatedAsset) {
         Portfolio portfolio = portfolioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Portfolio not found"));
         
         Asset existingAsset = portfolio.getAssetByTicker(ticker);
         if (existingAsset == null) {
-            return false;  
+            throw new EntityNotFoundException("Asset with ticker " + ticker + " not found in portfolio");
         }
 
         existingAsset.setQuantity(updatedAsset.getQuantity());
         existingAsset.setPurchasePrice(updatedAsset.getPurchasePrice());
         existingAsset.setTicker(updatedAsset.getTicker());
-        existingAsset.setTicker(updatedAsset.getTicker());
         existingAsset.setCurrency(updatedAsset.getCurrency());
 
         portfolioRepository.save(portfolio);
-        return true;
+        return portfolio;
+    }
+
+    public void deletePortfolio(UUID id) {
+        if (!portfolioRepository.existsById(id)) {
+            throw new EntityNotFoundException("Portfolio not found");
+        }
+
+        Portfolio portfolio = portfolioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Portfolio not found"));
+        portfolioRepository.delete(portfolio);
     }
 
 }

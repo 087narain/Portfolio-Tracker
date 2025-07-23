@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,17 +16,18 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.access.AccessDeniedException; 
-import org.springframework.web.bind.annotation.PutMapping;
 
 import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.AssetRequest;
 import com.narain.portfoliotracker.model.Portfolio;
 import com.narain.portfoliotracker.service.PortfolioService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -154,7 +155,12 @@ public class PortfolioController {
                                                      @RequestBody Portfolio updatedData, 
                                                      Authentication authentication) {
         String username = authentication.getName();
-        Portfolio updatedPortfolio = portfolioService.updatePortfolio(portfolioId, updatedData, username);
+
+        if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Portfolio updatedPortfolio = portfolioService.updatePortfolio(portfolioId, updatedData);
         return ResponseEntity.ok(updatedPortfolio);
     }
 
@@ -165,15 +171,37 @@ public class PortfolioController {
         String username = authentication.getName();
 
         if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorised access to this portfolio.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        if (!portfolioService.portfolioExists(portfolioId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Portfolio not found.");
+        try {
+            Portfolio updatedPortfolio = portfolioService.updateAssetInPortfolio(portfolioId, asset.getTicker(), asset);
+            return ResponseEntity.ok(updatedPortfolio);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        boolean updatedPortfolio = portfolioService.updateAssetInPortfolio(portfolioId, asset, username);
-        return ResponseEntity.ok(updatedPortfolio);
     }
 
+    @DeleteMapping("/delete/{portfolioId}")
+    public ResponseEntity<String> deletePortfolio(@PathVariable UUID portfolioId, 
+                                                   Authentication authentication) {
+        String username = authentication.getName();
+
+        if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to delete this portfolio.");
+        }
+
+        try {
+            portfolioService.deletePortfolio(portfolioId);
+            return ResponseEntity.ok("Portfolio deleted successfully.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Portfolio not found.");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorised to delete this portfolio.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the portfolio: " + e.getMessage());
+        }
+    }
 }
