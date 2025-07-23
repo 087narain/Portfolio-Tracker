@@ -1,7 +1,10 @@
 package com.narain.portfoliotracker.service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,8 @@ import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.Portfolio;
 import com.narain.portfoliotracker.model.User;
 import com.narain.portfoliotracker.repository.PortfolioRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PortfolioService {
@@ -31,6 +36,26 @@ public class PortfolioService {
         existingUser.getPortfolios().add(portfolio);
 
         return portfolioRepository.save(portfolio);
+    }
+
+    public List<Portfolio> getPortfoliosByUsername(String username) {
+        return portfolioRepository.findByUserUsername(username);
+    }
+
+    public boolean userOwnsPortfolio(String username, UUID portfolioId) {
+        return portfolioRepository.existsByIdAndUserUsername(portfolioId, username);
+    }
+
+    public void addAssetToPortfolio(String username, UUID portfolioId, Asset asset) throws AccessDeniedException {
+        if (!userOwnsPortfolio(username, portfolioId)) {
+            throw new AccessDeniedException("Unauthorized to modify this portfolio");
+        }
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new EntityNotFoundException("Portfolio not found"));
+        
+        portfolio.addAsset(asset);
+        portfolioRepository.save(portfolio);
     }
 
     public double getLiveValue(Asset asset) {
