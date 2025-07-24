@@ -4,34 +4,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GlobalQuote {
 
-    @JsonProperty("symbol")
+    @JsonProperty("01. symbol")
     private String symbol;
 
-    @JsonProperty("open")
+    @JsonProperty("02. open")
     private String open;
 
-    @JsonProperty("high")
+    @JsonProperty("03. high")
     private String high;
 
-    @JsonProperty("low")
+    @JsonProperty("04. low")
     private String low;
 
-    @JsonProperty("price")
+    @JsonProperty("05. price")
     private String price;
 
-    @JsonProperty("volume")
+    @JsonProperty("06. volume")
     private String volume;
 
-    @JsonProperty("latest-trading-day")
+    @JsonProperty("07. latest trading day")
     private String latestTradingDay;
 
-    @JsonProperty("previous-close")
+    @JsonProperty("08. previous close")
     private String previousClose;
 
-    @JsonProperty("change")
+    @JsonProperty("09. change")
     private String change;
 
-    @JsonProperty("change-percent")
+    @JsonProperty("10. change percent")
     private String changePercent;
 
     public GlobalQuote() {
