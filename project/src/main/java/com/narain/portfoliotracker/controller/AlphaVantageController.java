@@ -24,4 +24,4 @@ public class AlphaVantageController {
         System.out.println("GlobalQuote to return: " + data.getGlobalQuote());
         return ResponseEntity.ok(data.getGlobalQuote());
     }
-}
+}   
