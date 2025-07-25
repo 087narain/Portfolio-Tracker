@@ -7,6 +7,7 @@ function ETFViewer({ token }) {
 
     const handleInputChange = (event) => {
         setSymbol(event.target.value);
+        setShowQuote(false);
     };
 
     const handleSubmit = (event) => {
@@ -32,3 +33,7 @@ function ETFViewer({ token }) {
 }
 
 export default ETFViewer;
+
+
+
+
