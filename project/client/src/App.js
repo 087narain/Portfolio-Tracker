@@ -6,10 +6,12 @@ import AssetList from './components/AssetList';
 import { getTotalValue } from './api/portfolio';
 import PortfolioForm from './components/PortfolioForm';
 import AssetForm from './components/AssetForm';
+import ETFViewer from './components/ETFViewer';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
   const [error, setError] = useState(false);
+  const userToken = localStorage.getItem("token");
 
   const handleNewPortfolio = (newPortfolioData) => {
     setPortfolio({
@@ -58,13 +60,14 @@ function App() {
     }
 
     const fetchValue = async () => {
+      console.log("useEffect triggered, portfolio:", portfolio);
       try {
         console.log("Sending portfolio:", portfolio);
         const result = await getTotalValue(portfolio);
         console.log("Axios response:", result);
         setTotalValue(result.data.totalValue);
       } catch (err) {
-        console.error("API error:", err);
+        console.error("API error caught in App.js:", err);
         setError(true);
       }
     };
@@ -97,6 +100,10 @@ function App() {
 
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <AssetForm onSubmit={handleNewAsset} />
+              </div>
+
+              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+                <ETFViewer token={userToken} />
               </div>
             </div>
           </>

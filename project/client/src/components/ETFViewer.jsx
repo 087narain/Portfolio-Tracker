@@ -3,16 +3,17 @@ import ETFQuote from './ETFQuote';
 
 function ETFViewer({ token }) {
     const [symbol, setSymbol] = useState('');
-    const [showQuote, setShowQuote] = useState(false);
+    const [submittedSymbol, setSubmittedSymbol] = useState(null);
 
     const handleInputChange = (event) => {
-        setSymbol(event.target.value);
-        setShowQuote(false);
+        setSymbol(event.target.value.toUpperCase().trim());
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setShowQuote(true);
+        if (symbol) {
+            setSubmittedSymbol(symbol);
+        }
     };
 
     return (
@@ -27,7 +28,7 @@ function ETFViewer({ token }) {
                 />
                 <button type="submit">Get Quote</button>
             </form>
-            {showQuote && symbol && <ETFQuote symbol={symbol} token={token} />}
+            {submittedSymbol && <ETFQuote symbol={submittedSymbol} token={token} />}
         </div>
     );
 }

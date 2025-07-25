@@ -35,6 +35,7 @@ public class SecurityConfig {
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/portfolio/total").permitAll()
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/alphavantage/**").permitAll()
                 .anyRequest().authenticated()
         );
