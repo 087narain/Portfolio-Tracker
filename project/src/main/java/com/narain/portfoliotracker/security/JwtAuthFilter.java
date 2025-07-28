@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-
+    
     @Autowired
     private JwtService jwtService;
 
@@ -35,6 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String jwt = authHeader.substring(7);
         final String username = jwtService.extractUsername(jwt);
+        System.out.println("Extracted username from JWT: " + username);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
         var userDetails = userDetailsService.loadUserByUsername(username);

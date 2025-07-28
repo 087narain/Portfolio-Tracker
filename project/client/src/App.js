@@ -8,6 +8,7 @@ import PortfolioForm from './components/PortfolioForm';
 import AssetForm from './components/AssetForm';
 import ETFViewer from './components/ETFViewer';
 import LoginForm from './components/LoginForm';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
@@ -140,6 +141,11 @@ function App() {
               >
                 Log out
               </button>
+
+              {/* user profile */}
+              <div>
+                <UserProfile token={token} />
+              </div>
             </div>
           )}
         </>

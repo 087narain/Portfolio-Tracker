@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/portfolio/total").permitAll()
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/alphavantage/**").permitAll()
-                .anyRequest().authenticated()
-        );
+                .anyRequest().authenticated() // all others, including /api/user/profile, require auth
+            );
         return http.build();
     }
 
