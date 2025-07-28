@@ -7,11 +7,12 @@ import { getTotalValue } from './api/portfolio';
 import PortfolioForm from './components/PortfolioForm';
 import AssetForm from './components/AssetForm';
 import ETFViewer from './components/ETFViewer';
+import LoginForm from './components/LoginForm';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
   const [error, setError] = useState(false);
-  const userToken = localStorage.getItem("token");
+  const [token, setToken] = useState(localStorage.getItem('token'));
 
   const handleNewPortfolio = (newPortfolioData) => {
     setPortfolio({
@@ -28,6 +29,16 @@ function App() {
       assets: [...prevPortfolio.assets, newAssetData],
     }));
   }
+
+  const handleLogin = (newToken) => {
+    localStorage.setItem('token', newToken);
+    setToken(newToken);
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+  };
 
   const [portfolio, setPortfolio] = useState({
     portfolioName: "Dummy Portfolio",
@@ -78,22 +89,37 @@ function App() {
   return (
     <div className='min-h-screen bg-gray-100 flex flex-col items-center justify-between p-6'>
       <Header />
-      <main className='mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg'>
-        {error ? (
-          <div className="text-red-500 text-center bg-red-100 p-4 rounded">Failed to reach portfolio value.</div>  
-        ) : totalValue === null ? (
-          <div className='text-center text-lg'>Loading...</div>
-        ) : (
-          <>
-            <div className='min-h-screen bg-gray-100 p-6 flex flex-col items-center mt-2 space-y-8'>
+      <main className="mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg">
+      {/* ───────── if NOT logged in ───────── */}
+      {!token && (
+        <LoginForm onLogin={handleLogin} />
+      )}
+
+      {/* ───────── if logged in ───────── */}
+      {token && (
+        <>
+          {error ? (
+            <div className="text-red-500 text-center bg-red-100 p-4 rounded">
+              Failed to reach portfolio value.
+            </div>
+          ) : totalValue === null ? (
+            <div className="text-center text-lg">Loading...</div>
+          ) : (
+            <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mt-2 space-y-8">
+              {/* summary */}
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
-                <PortfolioSummary portfolioName={portfolio.portfolioName} totalValue={totalValue} />
+                <PortfolioSummary
+                  portfolioName={portfolio.portfolioName}
+                  totalValue={totalValue}
+                />
               </div>
 
+              {/* assets */}
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <AssetList assets={portfolio.assets} />
               </div>
 
+              {/* forms */}
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
                 <PortfolioForm onSubmit={handleNewPortfolio} />
               </div>
@@ -102,13 +128,23 @@ function App() {
                 <AssetForm onSubmit={handleNewAsset} />
               </div>
 
+              {/* ETF viewer */}
               <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
-                <ETFViewer token={userToken} />
+                <ETFViewer token={token} />
               </div>
+
+              {/* optional logout button */}
+              <button
+                className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                onClick={handleLogout}
+              >
+                Log out
+              </button>
             </div>
-          </>
-        )}
-      </main>
+          )}
+        </>
+      )}
+    </main>
       <Footer />
     </div>
   );

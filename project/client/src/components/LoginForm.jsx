@@ -36,10 +36,10 @@ function LoginForm({ onLogin }) {
             {error && <p className="text-red-500">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
+                    type="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
                     required
                 />
                 <input
