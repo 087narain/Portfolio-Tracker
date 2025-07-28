@@ -22,4 +22,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     void deleteById(UUID id);
 
     public User save(Optional<User> managedUser);
+
+    // Method to find a user by ID
+    @Override
+    Optional<User> findById(UUID id);
 }

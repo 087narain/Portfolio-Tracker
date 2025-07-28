@@ -1,6 +1,7 @@
 package com.narain.portfoliotracker.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,11 +22,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(String username, String rawPassword) {
+    public void registerUser(String username, String rawPassword) {
         String hashedPassword = passwordEncoder.encode(rawPassword);
         User user = new User(username, hashedPassword);
         
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public boolean authenticate(User user, String rawPassword) {
@@ -34,5 +35,24 @@ public class UserService {
 
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public User updateUser(String username, User updatedUser) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUsername(updatedUser.getUsername());
+            userRepository.save(user);
+        }
+
+        return userOptional.orElse(null);
+    }
+
+    public void deleteUser(UUID id) {
+        userRepository.deleteById(id);
     }
 }
