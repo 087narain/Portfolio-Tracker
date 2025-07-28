@@ -9,7 +9,7 @@ function ETFQuote({symbol, token}) {
             return;
         }
 
-        console.log("useEffect triggered");
+        console.log("useEffect triggered");  
 
         fetch (`http://localhost:8080/api/alphavantage/etf/${symbol}`, {
             headers: {
