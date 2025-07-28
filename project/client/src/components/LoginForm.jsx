@@ -19,14 +19,15 @@ function LoginForm({ onLogin }) {
             });
 
             if (!res.ok) {
-                    throw new Error('Login failed. Please check your credentials.');
+                const errText = await res.text();
+                throw new Error(errText || 'Login failed. Please check your credentials.');
             }
 
-            const data = await res.json();
-            localStorage.setItem('token', data.token);
-            onLogin(data.token);
+            const token = await res.text(); // expect raw string
+            localStorage.setItem('token', token);
+            onLogin(token);
         } catch (error) {
-            setError('An error occurred while logging in.');
+            setError(error.message);
         }
     };
 
