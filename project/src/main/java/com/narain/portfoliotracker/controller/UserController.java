@@ -47,23 +47,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
-
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username and password must not be empty");
-        }
-
-        if (userService.findUserByUsername(username).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
-        }
-
-        userService.registerUser(username, password); 
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody RegRequest request) {
         if (request.getUsername() == null || request.getPassword() == null) {

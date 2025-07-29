@@ -37,7 +37,7 @@ function SignupForm({ onSignup }) {
     };
 
     return (
-        <form onSubmit={handleSignup} className="max-w-sm mx-auto mt-10">
+        <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-10">
         <h2 className="text-2xl font-bold mb-4">Make an account:</h2>
 
         {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -65,5 +65,6 @@ function SignupForm({ onSignup }) {
         </button>
     </form>
     );
-
 }
+
+export default SignupForm;

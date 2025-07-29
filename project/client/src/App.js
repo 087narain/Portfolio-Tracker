@@ -9,11 +9,14 @@ import AssetForm from './components/AssetForm';
 import ETFViewer from './components/ETFViewer';
 import LoginForm from './components/LoginForm';
 import UserProfile from './components/UserProfile';
+import SignupForm from './components/SignupForm';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
   const [error, setError] = useState(false);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [showSignup, setShowSignup] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
 
   const handleNewPortfolio = (newPortfolioData) => {
     setPortfolio({
@@ -87,15 +90,47 @@ function App() {
     fetchValue();
   }, [portfolio]);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/user/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        setUserProfile(data);
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+      }
+    };
+  
+    if (token) {
+      fetchProfile();
+    }
+  }, [token]);
+
   return (
     <div className='min-h-screen bg-gray-100 flex flex-col items-center justify-between p-6'>
       <Header />
       <main className="mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg">
       {/* ───────── if NOT logged in ───────── */}
       {!token && (
-        <LoginForm onLogin={handleLogin} />
+        <>
+          {showSignup ? (
+            <SignupForm onSignup={handleLogin} />
+          ) : (
+            <LoginForm onLogin={handleLogin} />
+          )}
+          <button
+            onClick={() => setShowSignup(prev => !prev)}
+            className="mt-2 text-blue-500 underline"
+          >
+            {showSignup ? "Already have an account? Log in" : "New user? Sign up"}
+          </button>
+        </>
       )}
-
       {/* ───────── if logged in ───────── */}
       {token && (
         <>
