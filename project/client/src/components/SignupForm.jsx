@@ -38,7 +38,7 @@ function SignupForm({ onSignup }) {
 
     return (
         <form onSubmit={handleSignup} className="max-w-sm mx-auto mt-10">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-4">Make an account:</h2>
 
         {error && <p className="text-red-500 mb-2">{error}</p>}
 
@@ -61,7 +61,7 @@ function SignupForm({ onSignup }) {
         />
 
         <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded w-full">
-            Sign Up
+            Finish Signup
         </button>
     </form>
     );
