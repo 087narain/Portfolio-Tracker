@@ -13,7 +13,7 @@ function SignupForm({ onSignup }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-
+    
         try {
             const response = await fetch('http://localhost:8080/api/auth/signup', {
                 method: 'POST',
@@ -22,15 +22,15 @@ function SignupForm({ onSignup }) {
                 },
                 body: JSON.stringify({ username, password }),
             });
-
+    
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(errorText || 'Signup failed. Please try again.');
             }
-
-            const token = await response.text();
-            localStorage.setItem('token', token);
-            onSignup(token);
+    
+            const data = await response.json();  
+            localStorage.setItem('token', data.token); 
+            onSignup(data.token);
         } catch (error) {
             handleError(error.message);
         }
