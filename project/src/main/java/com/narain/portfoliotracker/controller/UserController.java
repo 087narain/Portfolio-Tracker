@@ -1,6 +1,7 @@
 package com.narain.portfoliotracker.controller;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.narain.portfoliotracker.dto.RegRequest;
 import com.narain.portfoliotracker.model.User;
+import com.narain.portfoliotracker.security.JwtService;
 import com.narain.portfoliotracker.service.UserService;
 
 @RestController
@@ -26,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping("/profile")
     public ResponseEntity<User> getProfile(Principal principal) {
@@ -57,6 +62,30 @@ public class UserController {
 
         userService.registerUser(username, password); 
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody RegRequest request) {
+        if (request.getUsername() == null || request.getPassword() == null) {
+            return ResponseEntity.badRequest().body("Username and password must not be empty");
+        }
+
+        if (request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("Username and password must not be empty");
+        }
+
+        String username = request.getUsername();
+        String password = request.getPassword();
+
+        if (userService.findUserByUsername(username).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+        }
+
+        userService.registerUser(username, password);
+
+        String token = jwtService.generateToken(username);
+
+        return ResponseEntity.ok().body(Map.of("token", token));
     }
 
     @GetMapping("/{id}")

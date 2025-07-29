@@ -33,12 +33,18 @@ public class SecurityConfig {
             .csrf().disable()
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .headers().frameOptions().disable()
+            .and()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/portfolio/total").permitAll()
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/alphavantage/**").permitAll()
+                .requestMatchers("/h2-console", "/h2-console/", "/h2-console/**").permitAll()
+                .requestMatchers("/api/user/signup", "/api/user/register").permitAll()
                 .anyRequest().authenticated() // all others, including /api/user/profile, require auth
             );
+
+        
         return http.build();
     }
 
