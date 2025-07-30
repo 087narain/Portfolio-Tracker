@@ -3,6 +3,7 @@ package com.narain.portfoliotracker.dto;
 public class CreatePortfolio {
     private String portfolioName;
     private double balance;
+    private double totalValue;
     private String currency;
 
     public String getPortfolioName() {
@@ -27,5 +28,13 @@ public class CreatePortfolio {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(double totalValue) {
+        this.totalValue = totalValue;
     }
 }

@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.narain.portfoliotracker.dto.CreatePortfolio;
 import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.AssetRequest;
 import com.narain.portfoliotracker.model.Portfolio;
+import com.narain.portfoliotracker.model.User;
 import com.narain.portfoliotracker.service.PortfolioService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -39,6 +41,16 @@ public class PortfolioController {
     public PortfolioController(PortfolioService portfolioService) {
         System.out.println("PortfolioController created with PortfolioService: " + portfolioService);
         this.portfolioService = portfolioService;
+    }
+
+    private Portfolio dtoToPortfolio(CreatePortfolio dto, User user) {
+        Portfolio portfolio = new Portfolio();
+        portfolio.setPortfolioName(dto.getPortfolioName());
+        portfolio.setBalance(dto.getBalance());
+        portfolio.setCurrency(dto.getCurrency());
+        portfolio.setUser(user);
+
+        return portfolio;
     }
 
     @PostMapping("/total")
@@ -65,7 +77,8 @@ public class PortfolioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding the asset: " + e.getMessage());
         }
     }
-    @DeleteMapping("/removed-asset/{ticker}")
+    
+    @DeleteMapping("/remove-asset/{portfolioId}/{ticker}")
     public ResponseEntity<String> removeAsset(@RequestBody Portfolio portfolio, @PathVariable UUID portfolioId, @PathVariable String ticker, Authentication authentication) {
         String username = authentication.getName();
         if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
