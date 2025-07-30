@@ -124,16 +124,13 @@ public class PortfolioController {
     }
 
     @PostMapping("/all-assets")
-    public ResponseEntity<Portfolio> getAllAssets(@RequestBody Portfolio portfolio) {
-        Portfolio responsePortfolio = new Portfolio(portfolio.getPortflioName(), portfolio.getCreationDate(), 
-                                                     portfolio.getTotalValue(), portfolio.getBalance(), 
-                                                     portfolio.getCurrency());
+    public ResponseEntity<List<Asset>> getAllAssets(@RequestBody PortfolioDTOId portfolioDTOId) {
+        UUID portfolioId = portfolioDTOId.getPortfolioDTOId();
 
-        for (Asset asset : portfolio.getAllAssets()) {
-            responsePortfolio.addAsset(asset);
-        }
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
 
-        return ResponseEntity.ok(responsePortfolio);
+        return ResponseEntity.ok(portfolio.getAllAssets());
     }
 
     @PostMapping("/asset-type-breakdown")
