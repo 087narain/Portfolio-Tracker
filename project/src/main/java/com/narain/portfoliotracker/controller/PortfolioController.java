@@ -150,8 +150,13 @@ public class PortfolioController {
     }
 
     @PostMapping("/asset-values-by-type")
-    public ResponseEntity<Map<String, Double>> getAssetValuesByType(@RequestBody Portfolio portfolio) {
-        return ResponseEntity.ok(portfolioService.getAssetValuesByType(portfolio));
+    public ResponseEntity<Map<String, Double>> getAssetValuesByType(@RequestBody PortfolioDTOId portfolioDTOId) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioDTOId.getPortfolioDTOId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+        
+        Map<String, Double> assetValues = portfolioService.getAssetValuesByType(portfolio);
+
+        return ResponseEntity.ok(assetValues);
     }
 
     @PostMapping("/metadata")
