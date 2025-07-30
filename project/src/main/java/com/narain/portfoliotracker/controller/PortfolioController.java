@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.narain.portfoliotracker.dto.AssetLookupDTO;
 import com.narain.portfoliotracker.dto.CreatePortfolio;
 import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
 import com.narain.portfoliotracker.dto.PortfolioDTOId;
@@ -90,11 +91,14 @@ public class PortfolioController {
     }
     
     @DeleteMapping("/remove-asset/{portfolioId}/{ticker}")
-    public ResponseEntity<String> removeAsset(@RequestBody Portfolio portfolio, @PathVariable UUID portfolioId, @PathVariable String ticker, Authentication authentication) {
+    public ResponseEntity<String> removeAsset(@PathVariable UUID portfolioId, @PathVariable String ticker, Authentication authentication) {
         String username = authentication.getName();
         if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorised access to this resource.");
         }
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
 
         boolean removed = portfolioService.removeAssetFromPortfolio(portfolio, ticker);
         if (removed) {
@@ -105,7 +109,12 @@ public class PortfolioController {
     }
 
     @PostMapping("/asset/{ticker}")
-    public ResponseEntity<Asset> getAssetByTicker(@RequestBody Portfolio portfolio, @PathVariable String ticker) {
+    public ResponseEntity<Asset> getAssetByTicker(@PathVariable AssetLookupDTO dto) {
+
+        UUID id = dto.getId();
+        String ticker = dto.getTicker();
+
+        Portfolio portfolio = portfolioService.getPortfolioById(id);
         Asset asset = portfolioService.getAssetByTicker(portfolio, ticker);
         if (asset != null) {
             return ResponseEntity.ok(asset);

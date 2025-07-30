@@ -79,8 +79,8 @@ public class PortfolioService {
         return totalValue + portfolio.getBalance();
     }
 
-    public boolean getPortfolioById(UUID id) {
-        return portfolioRepository.existsById(id);
+    public Portfolio getPortfolioById(UUID id) {
+        return portfolioRepository.getById(id);
     }
 
     public double getPortfolioValueByType(Portfolio portfolio, String assetType) {
