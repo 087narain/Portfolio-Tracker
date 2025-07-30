@@ -160,7 +160,10 @@ public class PortfolioController {
     }
 
     @PostMapping("/metadata")
-    public ResponseEntity<Map<String, Object>> getMetadata(@RequestBody Portfolio portfolio) {
+    public ResponseEntity<Map<String, Object>> getMetadata(@RequestBody PortfolioDTOId portfolioDTOId) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioDTOId.getPortfolioDTOId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
         Map<String, Object> meta = new HashMap<>();
         meta.put("name", portfolio.getPortflioName());
         meta.put("creationDate", portfolio.getCreationDate());
@@ -170,11 +173,18 @@ public class PortfolioController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Portfolio> createPortfolio(@RequestBody Portfolio portfolio,
-                                                    @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Portfolio> createPortfolio(@RequestBody CreatePortfolio createDto, @AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
-        Portfolio savedPortfolio = portfolioService.createPortfolioForUser(portfolio, username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPortfolio);
+        User user = portfolioService.getOwnerName(username);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Portfolio portfolio = dtoToPortfolio(createDto, user);
+        Portfolio createdPortfolio = portfolioService.createPortfolioForUser(portfolio, username);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPortfolio);
     }
 
     @GetMapping("/my-portfolios")
@@ -187,7 +197,7 @@ public class PortfolioController {
 
     @PutMapping("/update/{portfolioId}")
     public ResponseEntity<Portfolio> updatePortfolio(@PathVariable UUID portfolioId, 
-                                                     @RequestBody Portfolio updatedData, 
+                                                     @RequestBody CreatePortfolio dto, 
                                                      Authentication authentication) {
         String username = authentication.getName();
 
@@ -195,8 +205,16 @@ public class PortfolioController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        Portfolio updatedPortfolio = portfolioService.updatePortfolio(portfolioId, updatedData);
-        return ResponseEntity.ok(updatedPortfolio);
+        Portfolio existing = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
+        existing.setPortfolioName(dto.getPortfolioName());
+        existing.setBalance(dto.getBalance());
+        existing.setCurrency(dto.getCurrency());
+
+        Portfolio saved = portfolioRepository.save(existing);
+        return ResponseEntity.ok(saved);
+
     }
 
     @PutMapping("/update-asset/{portfolioId}")

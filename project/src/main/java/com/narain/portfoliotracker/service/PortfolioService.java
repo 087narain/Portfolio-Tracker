@@ -167,4 +167,10 @@ public class PortfolioService {
         portfolioRepository.delete(portfolio);
     }
 
-}
+    public User getOwnerName(String username) {
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found");
+        }
+        return user;
+    }
