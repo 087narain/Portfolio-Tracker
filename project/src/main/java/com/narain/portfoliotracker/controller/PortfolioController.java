@@ -20,13 +20,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.narain.portfoliotracker.dto.CreatePortfolio;
 import com.narain.portfoliotracker.dto.PorfolioValueWrapper;
+import com.narain.portfoliotracker.dto.PortfolioDTOId;
 import com.narain.portfoliotracker.model.Asset;
 import com.narain.portfoliotracker.model.AssetRequest;
 import com.narain.portfoliotracker.model.Portfolio;
 import com.narain.portfoliotracker.model.User;
+import com.narain.portfoliotracker.repository.PortfolioRepository;
 import com.narain.portfoliotracker.service.PortfolioService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -37,10 +40,12 @@ import jakarta.persistence.EntityNotFoundException;
 public class PortfolioController {
     
     private PortfolioService portfolioService;
+    private PortfolioRepository portfolioRepository;
 
-    public PortfolioController(PortfolioService portfolioService) {
+    public PortfolioController(PortfolioService portfolioService, PortfolioRepository portfolioRepository) {
         System.out.println("PortfolioController created with PortfolioService: " + portfolioService);
         this.portfolioService = portfolioService;
+        this.portfolioRepository = portfolioRepository;
     }
 
     private Portfolio dtoToPortfolio(CreatePortfolio dto, User user) {
@@ -54,14 +59,20 @@ public class PortfolioController {
     }
 
     @PostMapping("/total")
-    public PorfolioValueWrapper getTotalValue(@RequestBody Portfolio portfolio) {
-        double total = portfolioService.getTotalPortfolioValue(portfolio);
-        return new PorfolioValueWrapper(total);
+    public PorfolioValueWrapper getTotalValue(@RequestBody PortfolioDTOId portfolioDTOId) {
+        UUID portfolioId = portfolioDTOId.getPortfolioDTOId();
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
+        double totalValue = portfolioService.getTotalPortfolioValue(portfolio);
+
+        return new PorfolioValueWrapper(totalValue);
     }
 
     @PostMapping("/live")
-    public double getLiveValue(@RequestBody Portfolio portfolio) {
-        return portfolioService.getPortfolioLiveValue(portfolio);
+    public double getLiveValue(@RequestBody PortfolioDTOId portfolioDTOId) {
+        return portfolioService.getPortfolioLiveValue(portfolioRepository.getById(portfolioDTOId.getPortfolioDTOId()));
     }
 
    @PostMapping("/add-asset/{portfolioId}")
