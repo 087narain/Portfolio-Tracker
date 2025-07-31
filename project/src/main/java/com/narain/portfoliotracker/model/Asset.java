@@ -14,9 +14,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 
 @JsonTypeInfo(
-  use = JsonTypeInfo.Id.NAME,
-  include = JsonTypeInfo.As.PROPERTY,
-  property = "type"
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Stock.class, name = "Stock"),

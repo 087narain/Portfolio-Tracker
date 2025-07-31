@@ -3,7 +3,10 @@ package com.narain.portfoliotracker.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Bond extends Asset{
+import jakarta.persistence.Entity;
+
+@Entity
+public class Bond extends Asset {
     private LocalDate maturityDate;
     private double couponRate;
     private double faceValue;

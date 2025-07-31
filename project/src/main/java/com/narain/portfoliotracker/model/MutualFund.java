@@ -2,6 +2,9 @@ package com.narain.portfoliotracker.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+
+@Entity 
 public class MutualFund extends Asset {
     private String fundManager;
     private double expenseRatio;
