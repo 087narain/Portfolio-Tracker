@@ -1,5 +1,7 @@
 package com.narain.portfoliotracker.controller;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,43 +10,47 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.narain.portfoliotracker.PortfolioTrackerApplication;
+import com.narain.portfoliotracker.model.Portfolio;
+import com.narain.portfoliotracker.model.User;
+import com.narain.portfoliotracker.repository.PortfolioRepository;
+import com.narain.portfoliotracker.repository.UserRepository;
 
 @SpringBootTest(classes = PortfolioTrackerApplication.class)
 @AutoConfigureMockMvc
 class PortfolioControllerTest {
 
     @Autowired
+    private PortfolioRepository portfolioRepository;
+
+    @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void testGetTotalValueEndpoint() throws Exception {
+    try {
+        User testUser = new User();
+        testUser.setUsername("testuser");
+        testUser.setPasswordHash("dummy");
+        testUser.setCreationDate(LocalDateTime.now()); 
+        User savedUser = userRepository.save(testUser);
+
+        Portfolio testPortfolio = new Portfolio();
+        testPortfolio.setPortfolioName("Test Portfolio");
+        testPortfolio.setBalance(1000.0);
+        testPortfolio.setCurrency("USD");
+        testPortfolio.setCreationDate(); 
+        testPortfolio.setUser(savedUser); 
+
+        Portfolio savedPortfolio = portfolioRepository.save(testPortfolio);
+
         String portfolioJson = """
-
         {
-            "portfolioName": "Test Portfolio",
-            "creationDate": "2025-07-15T12:00:00",
-            "totalValue": 2600.0,
-            "balance": 1000.0,
-            "currency": "USD",
-            "assets": [
-                {
-                    "ticker": "AAPL",
-                    "quantity": 10,
-                    "purchasePrice": 150.0,
-                    "purchaseTime": "2025-07-14T10:00:00",
-                    "type": "Stock"
-                },
-                {
-                    "ticker": "TSLA",
-                    "quantity": 5,
-                    "purchasePrice": 200.0,
-                    "purchaseTime": "2025-07-14T10:00:00",
-                    "type": "Stock"
-                }
-            ]
+            "portfolioDTOId": "%s"
         }
-        """;
-
+        """.formatted(savedPortfolio.getId());
 
         var result = mockMvc.perform(post("/api/portfolio/total")
                 .contentType("application/json")
@@ -55,5 +61,10 @@ class PortfolioControllerTest {
         System.out.println("STATUS: " + result.getStatus());
         System.out.println("BODY: " + result.getContentAsString());
 
+    } catch (Exception e) {
+        System.err.println("Exception during test:");
+        e.printStackTrace(); 
+        throw e; 
     }
+}
 }  

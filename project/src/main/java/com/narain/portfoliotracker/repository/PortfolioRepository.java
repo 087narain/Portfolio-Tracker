@@ -18,5 +18,5 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, UUID> {
 
     Optional<Portfolio> findByIdAndUserUsername(UUID id, String username);
 
-    Portfolio findByID(UUID id);
+    // Portfolio findByID(UUID id);
 }
