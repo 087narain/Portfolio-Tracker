@@ -46,7 +46,7 @@ public class Portfolio {
     @ElementCollection
     @CollectionTable(name = "portfolio_asset_type_breakdown", joinColumns = @JoinColumn(name = "portfolio_id"))
     @MapKeyColumn(name = "asset_type")
-    @Column(name = "value")
+    @Column(name = "asset_value")
     private Map<String, Double> assetTypeBreakdown;
     private double balance;
     private String currency;
