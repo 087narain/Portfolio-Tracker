@@ -33,7 +33,7 @@ public class PortfolioService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         portfolio.setUser(existingUser);
-        existingUser.getPortfolios().add(portfolio);
+        // existingUser.getPortfolios().add(portfolio);
 
         return portfolioRepository.save(portfolio);
     }
