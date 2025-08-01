@@ -8,7 +8,7 @@ import {
   getTotalValue
 } from '../api/portfolio';
 
-const Dashboard () => {
+const Dashboard = () => {
     const [portfolios, setPortfolios] = useState([]);
     const [pickedPortfolioId, setPickedPortfolioId] = useState(null);
     const [assets, setAssets] = useState([]);
@@ -53,9 +53,52 @@ const Dashboard () => {
           purchaseTime: new Date().toISOString(),
           type: 'Stock'
         };
-        addAssetToPortfolio(selectedPortfolioId, asset)
-          .then(() => handlePortfolioSelect(selectedPortfolioId))
+        addAssetToPortfolio(pickedPortfolioId, asset)
+          .then(() => handlePortfolioSelect(pickedPortfolioId))
           .catch(err => console.error('Failed to add asset', err));
-      };
+    };
 
-}
+    const handleRemoveAsset = (ticker) => {
+        removeAssetFromPortfolio(pickedPortfolioId, ticker)
+          .then(() => handlePortfolioSelect(pickedPortfolioId))
+          .catch(err => console.error('Failed to remove asset', err));
+    };
+
+    return (
+        <div>
+            <h1>Dashboard</h1>
+
+            <button onClick={handleCreatePortfolio}>Create Portfolio</button>
+
+            <h2>Your Portfolios</h2>
+            <u1>
+                {portfolios.map(p => (
+                    <li key={p.id}>
+                        <button onClick={() => handlePortfolioSelect(p.id)}>
+                        {p.portfolioName}
+                        </button>
+                    </li>
+                ))}
+            </u1>
+
+            {pickedPortfolioId && (
+                <>
+                    <h2>Assets</h2>
+                    <button onClick={handleAddAsset}>Add Asset</button>
+                    <ul>
+                        {assets.map(asset => (
+                            <li key={asset.ticker}>
+                                {asset.ticker} - {asset.quantity} priced at: ${asset.purchasePrice}
+                                <button onClick={() => handleRemoveAsset(asset.ticker)}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <h3>Total Value: ${totalValue !== null ? totalValue : 'Loading...'}</h3>
+                </>
+            )}
+        </div>
+    );
+};
+
+export default Dashboard;
