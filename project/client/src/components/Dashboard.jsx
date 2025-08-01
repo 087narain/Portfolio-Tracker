@@ -54,13 +54,13 @@ const Dashboard = () => {
           type: 'Stock'
         };
         addAssetToPortfolio(pickedPortfolioId, asset)
-          .then(() => handlePortfolioSelect(pickedPortfolioId))
+          .then(() => handlePortfolioSelection(pickedPortfolioId))
           .catch(err => console.error('Failed to add asset', err));
     };
 
     const handleRemoveAsset = (ticker) => {
         removeAssetFromPortfolio(pickedPortfolioId, ticker)
-          .then(() => handlePortfolioSelect(pickedPortfolioId))
+          .then(() => handlePortfolioSelection(pickedPortfolioId))
           .catch(err => console.error('Failed to remove asset', err));
     };
 
@@ -71,15 +71,15 @@ const Dashboard = () => {
             <button onClick={handleCreatePortfolio}>Create Portfolio</button>
 
             <h2>Your Portfolios</h2>
-            <u1>
+            <ul>
                 {portfolios.map(p => (
                     <li key={p.id}>
-                        <button onClick={() => handlePortfolioSelect(p.id)}>
+                        <button onClick={() => handlePortfolioSelection(p.id)}>
                         {p.portfolioName}
                         </button>
                     </li>
                 ))}
-            </u1>
+            </ul>
 
             {pickedPortfolioId && (
                 <>
