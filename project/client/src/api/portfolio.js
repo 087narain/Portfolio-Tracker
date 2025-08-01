@@ -12,7 +12,7 @@ const authHeader = () => {
 }
 
 export const getTotalValue = (portfolioId) => {
-  return axios.post(`${API_BASE}/total`, { portfolioDTOId: portfolioId }, authHeader());
+  return axios.post(`${API_BASE_URL}/total`, { portfolioDTOId: portfolioId }, authHeader());
 };
 
 export const getUserPortfolios = () => {
@@ -28,9 +28,9 @@ export const addAssetToPortfolio = (portfolioId, assetData) => {
 };
 
 export const getAllAssets = (portfolioId) => {
-  return axios.get(`${API_BASE_URL}/assets/${portfolioId}`, authHeader());
+  return axios.post(`${API_BASE_URL}/all-assets`, { portfolioDTOId: portfolioId }, authHeader());
 }
 
-export const removeAssetFromPortfolio = (portfolioId, assetId) => {
-  return axios.delete(`${API_BASE_URL}/remove-asset/${portfolioId}/${assetId}`, authHeader());
+export const removeAssetFromPortfolio = (portfolioId, ticker) => {
+  return axios.delete(`${API_BASE_URL}/remove-asset/${portfolioId}/${ticker}`, authHeader());
 };
