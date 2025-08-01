@@ -30,7 +30,7 @@ const Dashboard = () => {
             .then(res => setAssets(res.data))
             .catch(err => console.error('Failed to fetch assets', err));
         getTotalValue(portfolioId)
-            .then(res => setTotalValue(res.data.totalValue || res.data))
+            .then(res => setTotalValue(res.data.totalValue ?? res.data))
             .catch(err => console.error('Failed to fetch total value', err));
     };
 
@@ -87,7 +87,7 @@ const Dashboard = () => {
                     <button onClick={handleAddAsset}>Add Asset</button>
                     <ul>
                         {assets.map(asset => (
-                            <li key={asset.ticker}>
+                            <li key={`${asset.ticker}-${asset.purchaseTime}`}>
                                 {asset.ticker} - {asset.quantity} priced at: ${asset.purchasePrice}
                                 <button onClick={() => handleRemoveAsset(asset.ticker)}>Remove</button>
                             </li>
