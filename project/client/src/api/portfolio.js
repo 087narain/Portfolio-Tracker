@@ -4,6 +4,7 @@ const API_BASE_URL = 'http://localhost:8080/api/portfolio';
 
 const authHeader = () => {
   const token = localStorage.getItem('token');
+  if (!token) return {};
   return {
     headers: {
       Authorization: `Bearer ${token}`,
