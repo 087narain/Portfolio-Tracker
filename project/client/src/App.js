@@ -10,6 +10,7 @@ import ETFViewer from './components/ETFViewer';
 import LoginForm from './components/LoginForm';
 import UserProfile from './components/UserProfile';
 import SignupForm from './components/SignupForm';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [totalValue, setTotalValue] = useState(null);
@@ -45,6 +46,7 @@ function App() {
   };
 
   const [portfolio, setPortfolio] = useState({
+    id: "7da16d36-11db-4970-af17-c46307e98838",
     portfolioName: "Dummy Portfolio",
     creationDate: "2025-07-15T12:00:00",
     totalValue: 0.0,
@@ -134,6 +136,7 @@ function App() {
       {/* ───────── if logged in ───────── */}
       {token && (
         <>
+          <Dashboard />
           {error ? (
             <div className="text-red-500 text-center bg-red-100 p-4 rounded">
               Failed to reach portfolio value.

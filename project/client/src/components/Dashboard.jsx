@@ -10,12 +10,14 @@ import {
 } from '../api/portfolio';
 
 const Dashboard = () => {
+    console.log("Dashboard component rendered");
     const [portfolios, setPortfolios] = useState([]);
     const [pickedPortfolioId, setPickedPortfolioId] = useState(null);
     const [assets, setAssets] = useState([]);
     const [totalValue, setTotalValue] = useState(null);
 
     useEffect(() => {
+        console.log("Dashboard loaded");
         loadPortfolios();
     }, []);
     
@@ -46,9 +48,14 @@ const Dashboard = () => {
 
     const handleCreatePortfolio = (portfolioData) => {
         createPortfolio(portfolioData)
-          .then(() => loadPortfolios())
+          .then(res => {
+            const newPortfolio = res.data; 
+            setPortfolios(prev => [...prev, newPortfolio]); 
+            setPickedPortfolioId(newPortfolio.id);
+            setPortfolios(newPortfolio);
+          })
           .catch(err => console.error('Failed to create portfolio', err));
-    };
+      };
 
     const handleAddAsset = () => {
         const asset = {
@@ -79,7 +86,7 @@ const Dashboard = () => {
             <ul>
                 {portfolios.map(p => (
                     <li key={p.id}>
-                        <button onClick={() => handlePortfolioSelection(p.id)}>
+                        <button onClick={() => handlePortfolioSelection(p)}>
                         {p.portfolioName}
                         </button>
                     </li>
