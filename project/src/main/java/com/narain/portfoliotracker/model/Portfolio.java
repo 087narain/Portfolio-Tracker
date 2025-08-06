@@ -23,6 +23,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 @Entity
 public class Portfolio {
 
@@ -52,10 +53,16 @@ public class Portfolio {
     private String currency;
     
     public Portfolio() {
-        this.id = UUID.randomUUID();
         this.creationDate = LocalDateTime.now();
         this.assetTypeBreakdown = new HashMap<>();
         this.assets = new ArrayList<>();
+    }
+
+    @PrePersist
+    public void ensureId() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
     }
 
     public Portfolio(String portfolioName, LocalDateTime creationDate, double totalValue, double balance, String currency) {

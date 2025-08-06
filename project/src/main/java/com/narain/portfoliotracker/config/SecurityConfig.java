@@ -38,7 +38,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/portfolio/total").permitAll()
-                .requestMatchers("/api/auth/login", "/api/auth/signup", "/api/alphavantage/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console", "/h2-console/", "/h2-console/**").permitAll()
                 .anyRequest().authenticated() // all others, including /api/user/profile, require auth
             );
