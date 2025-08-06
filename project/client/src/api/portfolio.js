@@ -13,7 +13,8 @@ const authHeader = () => {
 }
 
 export const getTotalValue = (portfolioId) => {
-  return axios.post(`${API_BASE_URL}/total`, { portfolioDTOId: portfolioId.toString() }, authHeader());
+  console.log('Sending to backend:', { portfolioDTOId: portfolioId });
+  return axios.post(`${API_BASE_URL}/total`, { portfolioDTOId: portfolioId }, authHeader());
 };
 
 export const getUserPortfolios = () => {

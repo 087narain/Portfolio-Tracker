@@ -78,7 +78,7 @@ function App() {
       console.log("useEffect triggered, portfolio:", portfolio);
       try {
         console.log("Sending portfolio:", portfolio);
-        const result = await getTotalValue(portfolio);
+        const result = await getTotalValue(portfolio.id);
         console.log("Axios response:", result);
         setTotalValue(result.data.totalValue);
       } catch (err) {

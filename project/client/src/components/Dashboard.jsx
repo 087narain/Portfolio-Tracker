@@ -25,14 +25,23 @@ const Dashboard = () => {
           .catch(err => console.error('Failed to fetch portfolios', err));
     };
 
-    const handlePortfolioSelection = (portfolioId) => {
-        setPickedPortfolioId(portfolioId);
-        getAllAssets(portfolioId)
-            .then(res => setAssets(res.data))
-            .catch(err => console.error('Failed to fetch assets', err));
-        getTotalValue(portfolioId)
-            .then(res => setTotalValue(res.data.totalValue ?? res.data))
-            .catch(err => console.error('Failed to fetch total value', err));
+    const handlePortfolioSelection = (portfolio) => {
+        setPickedPortfolioId(portfolio.id); // save id
+      
+        // Use portfolio.id here, NOT portfolio object
+        getAllAssets(portfolio.id)
+          .then(res => {
+            console.log('Assets response:', res.data);
+            setAssets(res.data);
+          })
+          .catch(err => console.error('Failed to fetch assets', err));
+      
+        getTotalValue(portfolio.id)
+          .then(res => {
+            console.log('Total value response:', res.data);
+            setTotalValue(res.data.totalValue ?? res.data);
+          })
+          .catch(err => console.error('Failed to fetch total value', err));
     };
 
     const handleCreatePortfolio = (portfolioData) => {
