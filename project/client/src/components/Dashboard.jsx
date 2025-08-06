@@ -49,10 +49,20 @@ const Dashboard = () => {
     const handleCreatePortfolio = (portfolioData) => {
         createPortfolio(portfolioData)
           .then(res => {
-            const newPortfolio = res.data; 
-            setPortfolios(prev => [...prev, newPortfolio]); 
-            setPickedPortfolioId(newPortfolio.id);
-            setPortfolios(newPortfolio);
+            const newPortfolio = res.data;
+            console.log("📦 New portfolio created:", newPortfolio);
+      
+            setPortfolios(prev => [...prev, newPortfolio]);
+            setPickedPortfolioId(newPortfolio.id); 
+            console.log("🆕 New ID set:", newPortfolio.id);
+      
+            getAllAssets(newPortfolio.id)
+              .then(res => setAssets(res.data))
+              .catch(err => console.error('Failed to fetch assets', err));
+      
+            getTotalValue(newPortfolio.id)
+              .then(res => setTotalValue(res.data.totalValue ?? res.data))
+              .catch(err => console.error('Failed to fetch total value', err));
           })
           .catch(err => console.error('Failed to create portfolio', err));
       };
