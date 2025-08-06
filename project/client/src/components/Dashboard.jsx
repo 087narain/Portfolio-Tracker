@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PortfolioForm from './PortfolioForm'
 import {
   getUserPortfolios,
   createPortfolio,
@@ -34,14 +35,9 @@ const Dashboard = () => {
             .catch(err => console.error('Failed to fetch total value', err));
     };
 
-    const handleCreatePortfolio = () => {
-        const data = {
-            portfolioName: 'New Portfolio',
-            balance: 1000,
-            currency: 'USD'
-        };
-        createPortfolio(data)
-          .then(loadPortfolios)
+    const handleCreatePortfolio = (portfolioData) => {
+        createPortfolio(portfolioData)
+          .then(() => loadPortfolios())
           .catch(err => console.error('Failed to create portfolio', err));
     };
 
@@ -68,7 +64,7 @@ const Dashboard = () => {
         <div>
             <h1>Dashboard</h1>
 
-            <button onClick={handleCreatePortfolio}>Create Portfolio</button>
+            <PortfolioForm onSubmit={handleCreatePortfolio} />
 
             <h2>Your Portfolios</h2>
             <ul>
