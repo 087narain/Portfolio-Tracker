@@ -13,7 +13,7 @@ const authHeader = () => {
 }
 
 export const getTotalValue = (portfolioId) => {
-  return axios.post(`${API_BASE_URL}/total`, { portfolioDTOId: portfolioId }, authHeader());
+  return axios.post(`${API_BASE_URL}/total`, { portfolioDTOId: portfolioId.toString() }, authHeader());
 };
 
 export const getUserPortfolios = () => {
