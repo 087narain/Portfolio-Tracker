@@ -91,7 +91,19 @@ public class PortfolioController {
 
     @PostMapping("/live")
     public double getLiveValue(@RequestBody PortfolioDTOId portfolioDTOId) {
-        return portfolioService.getPortfolioLiveValue(portfolioRepository.getById(portfolioDTOId.getPortfolioDTOId()));
+        if (portfolioDTOId == null || portfolioDTOId.getPortfolioDTOId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Portfolio ID must not be null");
+        }
+
+        User currentUser = getCurrentUser();
+        Portfolio portfolio = portfolioRepository.findById(portfolioDTOId.getPortfolioDTOId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+
+        return portfolioService.getPortfolioLiveValue(portfolio);
     }
 
    @PostMapping("/add-asset/{portfolioId}")
@@ -127,12 +139,23 @@ public class PortfolioController {
     }
 
     @PostMapping("/asset/{ticker}")
-    public ResponseEntity<Asset> getAssetByTicker(@PathVariable AssetLookupDTO dto) {
+    public ResponseEntity<Asset> getAssetByTicker(@RequestBody AssetLookupDTO dto) {
 
         UUID id = dto.getId();
         String ticker = dto.getTicker();
 
         Portfolio portfolio = portfolioService.getPortfolioById(id);
+
+        if (portfolio == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        User currentUser = getCurrentUser();
+
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+
         Asset asset = portfolioService.getAssetByTicker(portfolio, ticker);
         if (asset != null) {
             return ResponseEntity.ok(asset);
@@ -145,14 +168,38 @@ public class PortfolioController {
     public ResponseEntity<List<Asset>> getAllAssets(@RequestBody PortfolioDTOId portfolioDTOId) {
         UUID portfolioId = portfolioDTOId.getPortfolioDTOId();
 
+        User currentUser = getCurrentUser();
+
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+        
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+        if (portfolio.getAllAssets().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assets found in portfolio");
+        }
+        if (portfolio.getAllAssets() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio has no assets");
+        }
 
         return ResponseEntity.ok(portfolio.getAllAssets());
     }
 
     @PostMapping("/asset-type-breakdown")
     public ResponseEntity<String> getAssetTypeBreakdown(@RequestBody Portfolio portfolio) {
+        if (portfolio == null || portfolio.getAllAssetTypes().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No assets found in portfolio");
+        }
+        if (portfolio.getAllAssetTypes() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Portfolio has no assets");
+        }
+
+        User currentUser = getCurrentUser();
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+        
         StringBuilder breakdown = new StringBuilder();
         for (String type : portfolio.getAllAssetTypes()) {
             double totalValue = portfolio.getTotalValueByType(type);
@@ -163,7 +210,18 @@ public class PortfolioController {
     
     @PostMapping("/value-by-type")
     public ResponseEntity<Double> getValueByType(@RequestBody AssetRequest request) {
-        double value = portfolioService.getPortfolioValueByType(request.getPortfolio(), request.getAsset().getType());
+        if (request.getPortfolio() == null || request.getAsset() == null || request.getAsset().getType() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Portfolio and asset type must not be null");
+        }
+
+        User currentUser = getCurrentUser();
+        Portfolio portfolio = portfolioRepository.findById(request.getPortfolio().getId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+        double value = portfolioService.getPortfolioValueByType(portfolio, request.getAsset().getType());
         return ResponseEntity.ok(value);
     }
 
@@ -171,7 +229,12 @@ public class PortfolioController {
     public ResponseEntity<Map<String, Double>> getAssetValuesByType(@RequestBody PortfolioDTOId portfolioDTOId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioDTOId.getPortfolioDTOId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
-        
+
+        User currentUser = getCurrentUser();
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+
         Map<String, Double> assetValues = portfolioService.getAssetValuesByType(portfolio);
 
         return ResponseEntity.ok(assetValues);
@@ -181,6 +244,10 @@ public class PortfolioController {
     public ResponseEntity<Map<String, Object>> getMetadata(@RequestBody PortfolioDTOId portfolioDTOId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioDTOId.getPortfolioDTOId())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+        User currentUser = getCurrentUser();
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("name", portfolio.getPortflioName());
