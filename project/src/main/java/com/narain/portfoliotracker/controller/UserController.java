@@ -72,8 +72,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<User> getUserById(@PathVariable UUID id, Principal principal) {
         User user = userService.getUserById(id);
+
+        if (!user.getUsername().equals(principal.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         return ResponseEntity.ok(user);
     }
 
@@ -83,7 +88,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteUser(@PathVariable UUID id, Principal principal) {
+        User user = userService.getUserById(id);
+        if (!user.getUsername().equals(principal.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not authorized to delete this user.");
+        }
+
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }

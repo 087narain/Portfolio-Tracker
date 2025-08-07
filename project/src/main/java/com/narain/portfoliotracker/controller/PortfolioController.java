@@ -176,11 +176,10 @@ public class PortfolioController {
         if (!portfolio.getUser().getId().equals(currentUser.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
-        if (portfolio.getAllAssets().isEmpty()) {
+        
+        List<Asset> assets = portfolio.getAllAssets();
+        if (assets == null || assets.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assets found in portfolio");
-        }
-        if (portfolio.getAllAssets() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio has no assets");
         }
 
         return ResponseEntity.ok(portfolio.getAllAssets());
