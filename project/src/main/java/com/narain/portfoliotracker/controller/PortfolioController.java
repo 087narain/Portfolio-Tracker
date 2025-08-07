@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ import com.narain.portfoliotracker.model.AssetRequest;
 import com.narain.portfoliotracker.model.Portfolio;
 import com.narain.portfoliotracker.model.User;
 import com.narain.portfoliotracker.repository.PortfolioRepository;
+import com.narain.portfoliotracker.repository.UserRepository;
 import com.narain.portfoliotracker.service.PortfolioService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -42,11 +44,13 @@ public class PortfolioController {
     
     private PortfolioService portfolioService;
     private PortfolioRepository portfolioRepository;
+    private UserRepository userRepository;
 
-    public PortfolioController(PortfolioService portfolioService, PortfolioRepository portfolioRepository) {
+    public PortfolioController(PortfolioService portfolioService, PortfolioRepository portfolioRepository, UserRepository userRepository) {
         System.out.println("PortfolioController created with PortfolioService: " + portfolioService);
         this.portfolioService = portfolioService;
         this.portfolioRepository = portfolioRepository;
+        this.userRepository = userRepository;
     }
 
     private Portfolio dtoToPortfolio(CreatePortfolio dto, User user) {
@@ -57,6 +61,12 @@ public class PortfolioController {
         portfolio.setUser(user);
 
         return portfolio;
+    }
+
+    private User getCurrentUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByUsername(auth.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
     @PostMapping("/total")
