@@ -72,9 +72,17 @@ public class PortfolioController {
     @PostMapping("/total")
     public PorfolioValueWrapper getTotalValue(@RequestBody PortfolioDTOId portfolioDTOId) {
         UUID portfolioId = portfolioDTOId.getPortfolioDTOId();
+        if (portfolioId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Portfolio ID must not be null");
+        }
 
+        User currentUser = getCurrentUser();
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+
+        if (!portfolio.getUser().getId().equals(currentUser.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
 
         double totalValue = portfolioService.getTotalPortfolioValue(portfolio);
 
@@ -192,6 +200,11 @@ public class PortfolioController {
         }
 
         Portfolio portfolio = dtoToPortfolio(createDto, user);
+
+        if (!portfolio.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         Portfolio createdPortfolio = portfolioService.createPortfolioForUser(portfolio, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPortfolio);
@@ -253,6 +266,19 @@ public class PortfolioController {
         String username = authentication.getName();
 
         if (!portfolioService.userOwnsPortfolio(username, portfolioId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to delete this portfolio.");
+        }
+
+        if (!portfolioRepository.existsById(portfolioId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Portfolio not found.");
+        }
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Portfolio not found"));
+        
+        User user = portfolio.getUser();
+
+        if (!portfolio.getUser().getId().equals(user.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to delete this portfolio.");
         }
 
