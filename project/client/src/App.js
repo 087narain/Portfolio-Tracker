@@ -46,7 +46,7 @@ function App() {
   };
 
   const [portfolio, setPortfolio] = useState({
-    id: "a27d3f5f-8886-419c-a2fb-c594ca56b822",
+    id: "8941d186-5111-4518-a3e6-d4471dded57d",
     portfolioName: "Dummy Portfolio",
     creationDate: "2025-07-15T12:00:00",
     totalValue: 0.0,
@@ -71,7 +71,7 @@ function App() {
   });
 
   useEffect(() => {
-
+    console.log('Portfolio updated:', portfolio);
     if (!portfolio || !portfolio.assets || portfolio.assets.length === 0) {
       return;
     }
@@ -114,7 +114,7 @@ function App() {
   }, [token]);
 
   return (
-    <div className='min-h-screen bg-gray-100 flex flex-col items-center justify-between p-6'>
+    <div className='min-h-screen bg-darkbg flex flex-col items-center justify-between p-6 text-white'>
       <Header />
       <main className="mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg">
       {/* ───────── if NOT logged in ───────── */}
@@ -154,7 +154,7 @@ function App() {
               </div>
 
               {/* assets */}
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+              <div className="w-full max-w-2xl bg-darkcard p-6 rounded-lg shadow-md mb-8">
                 <AssetList assets={portfolio.assets} />
               </div>
 
@@ -174,7 +174,7 @@ function App() {
 
               {/* optional logout button */}
               <button
-                className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+                className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
                 onClick={handleLogout}
               >
                 Log out
