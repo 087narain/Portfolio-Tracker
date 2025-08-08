@@ -17,18 +17,24 @@ function ETFViewer({ token }) {
     };
 
     return (
-        <div className="etf-viewer">
-            <h1>ETF Viewer</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={symbol}
-                    onChange={handleInputChange}
-                    placeholder="Enter ETF Symbol"
-                />
-                <button type="submit">Get Quote</button>
-            </form>
-            {submittedSymbol && <ETFQuote symbol={submittedSymbol} token={token} />}
+        <div className="w-full max-w-xl bg-darkBlue2 shadow-md rounded-lg p-6 text-white">
+          <h1 className="text-3xl font-bold mb-4 text-accentGreen">ETF Viewer</h1>
+          <form onSubmit={handleSubmit} className="flex space-x-3 mb-4">
+            <input
+              type="text"
+              value={symbol}
+              onChange={handleInputChange}
+              placeholder="Enter ETF Symbol"
+              className="flex-grow p-2 rounded border border-darkBlue3 bg-darkBlue1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accentGreen"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 bg-accentBlue rounded hover:bg-accentGreen transition-colors"
+            >
+              Get Quote
+            </button>
+          </form>
+          {submittedSymbol && <ETFQuote symbol={submittedSymbol} token={token} />}
         </div>
     );
 }

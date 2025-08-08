@@ -88,11 +88,17 @@ const Dashboard = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
+            <h1 className="text-4xl font-bold text-cyan-400 mb-6 drop-shadow-lg">
+                Dashboard
+            </h1>
 
-            <PortfolioForm onSubmit={handleCreatePortfolio} />
+            <div className="mb-8">
+                <PortfolioForm onSubmit={handleCreatePortfolio} />
+            </div>
 
-            <h2>Your Portfolios</h2>
+            <h2 className="text-4xl font-bold text-cyan-400 mb-6 drop-shadow-lg">
+                Your Portfolios
+            </h2>
             <ul>
                 {portfolios.map(p => (
                     <li key={p.id}>

@@ -64,17 +64,31 @@ function UserProfile({ token }) {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-        <div className="user-profile">
-            <h2 className="text-2xl font-bold mb-4">User Profile</h2>
-            <label className="block mb-2">Username:</label>
-            <input 
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="border p-2 mb-4 w-full"
-            />
-            <button onClick={handleUpdate}>Update</button>
-            <button onClick={handleDelete} className="ml-4 text-red-500">Delete Account</button>
+        <div className="user-profile max-w-xl mx-auto p-6 bg-darkBlue2 rounded-lg shadow-md text-white">
+          <h2 className="text-3xl font-bold mb-6">User Profile</h2>
+      
+          <label className="block mb-2 text-gray-300 font-semibold">Username:</label>
+          <input 
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-3 rounded border border-gray-600 bg-darkBlue3 mb-6 text-white focus:outline-none focus:ring-2 focus:ring-accentBlue"
+          />
+      
+          <div className="flex justify-start space-x-4">
+            <button 
+              onClick={handleUpdate} 
+              className="bg-accentBlue hover:bg-accentGreen transition-colors px-6 py-3 rounded font-semibold"
+            >
+              Update
+            </button>
+            <button 
+              onClick={handleDelete} 
+              className="text-red-500 hover:text-red-600 transition-colors font-semibold"
+            >
+              Delete Account
+            </button>
+          </div>
         </div>
     );
 }

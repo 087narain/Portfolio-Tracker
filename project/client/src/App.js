@@ -114,9 +114,9 @@ function App() {
   }, [token]);
 
   return (
-    <div className='min-h-screen bg-darkbg flex flex-col items-center justify-between p-6 text-white'>
+    <div className='min-h-screen bg-darkBlue1 flex flex-col items-center justify-between p-6 text-white'>
       <Header />
-      <main className="mt-9 p-6 w-full max-w-2xl bg-white shadow-md rounded-lg">
+      <main className="mt-9 p-6 w-full max-w-2xl bg-darkBlue2 shadow-md rounded-lg">
       {/* ───────── if NOT logged in ───────── */}
       {!token && (
         <>
@@ -144,9 +144,9 @@ function App() {
           ) : totalValue === null ? (
             <div className="text-center text-lg">Loading...</div>
           ) : (
-            <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center mt-2 space-y-8">
+            <div className="min-h-screen bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
               {/* summary */}
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+              <div className="w-full max-w-2xl bg-darkBlue3 p-6 rounded-lg shadow-md mb-8">
                 <PortfolioSummary
                   portfolioName={portfolio.portfolioName}
                   totalValue={totalValue}
@@ -159,16 +159,16 @@ function App() {
               </div>
 
               {/* forms */}
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
                 <PortfolioForm onSubmit={handleNewPortfolio} />
               </div>
 
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
                 <AssetForm onSubmit={handleNewAsset} />
               </div>
 
               {/* ETF viewer */}
-              <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md mb-8">
+              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
                 <ETFViewer token={token} />
               </div>
 
