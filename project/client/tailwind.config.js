@@ -8,15 +8,18 @@ module.exports = {
       colors: {
         accentBlue: '#1DA1F2',
         accentGreen: '#00B894',
-        darkbg: '#121212',
-        darkBlue1: '#101827',
-        darkBlue2: '#2C3E60',
-        darkBlue3: '#3F5274',
-        darkBlue4: '#507394',
-        darkGreen1: '#123826',
-        darkGreen2: '#1F4B36',
-        darkGreen3: '#2C6A47',
-        darkGreen4: '#3AA75E',
+      
+        darkbg: '#0B0F1A',       // almost black with blue tint, base bg
+      
+        darkBlue1: '#0C1220',    // darkest card bg, nearly black-blue
+        darkBlue2: '#121A2B',    // slight lightening, deep blue-black
+        darkBlue3: '#182338',    // smoother gradient, still very dark blue
+        darkBlue4: '#1E2D46',    // lightest card shade but still very dark blue
+      
+        darkGreen1: '#081B12',
+        darkGreen2: '#0D2B1E',
+        darkGreen3: '#114329',
+        darkGreen4: '#165735',
       },
       spacing: {
         '72': '18rem',
