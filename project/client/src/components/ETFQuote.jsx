@@ -20,7 +20,7 @@ function ETFQuote({symbol, token}) {
         datasets: [
         {
             label: 'Price',
-            data: [low, price, high],
+            data: [low, current, high],
             backgroundColor: [
             'rgba(100, 149, 237, 0.5)',  // low - cornflower blue
             'rgba(0, 191, 165, 0.8)',    // current price - medium aquamarine
@@ -34,8 +34,8 @@ function ETFQuote({symbol, token}) {
         scales: {
         y: {
             beginAtZero: false,
-            min: Math.min(low, price, high) * 0.95,
-            max: Math.max(low, price, high) * 1.05,
+            min: Math.min(low, current, high) * 0.95,
+            max: Math.max(low, current, high) * 1.05,
         },
         },
         plugins: {
