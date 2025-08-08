@@ -49,9 +49,9 @@ export default function AssetForm({ onSubmit }) {
     return (
         <form 
           onSubmit={handleSubmit} 
-          className="bg-gray-100 dark:bg-darkBlue3 shadow-md rounded-lg p-6 w-full max-w-xl text-gray-900 dark:text-white"
+          className="bg-gray-100 dark:bg-darkBlue3 shadow-md rounded-lg p-6 w-full text-gray-900 dark:text-white"
         >
-          <h2 className="text-2xl font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
+          <h2 className="text-2xl text-center font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
       
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="ticker">Ticker</label>

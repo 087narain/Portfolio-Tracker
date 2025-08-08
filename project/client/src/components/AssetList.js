@@ -1,7 +1,7 @@
 export default function AssetList({ assets }) {
   return (
     <div className="text-gray-900 dark:text-white">
-      <h3 className="text-xl font-semibold mt-4">Assets:</h3>
+      <h3 className="text-xl text-center font-semibold mt-4">Assets</h3>
       <ul className="divide-y divide-gray-300 dark:divide-gray-700 mt-2">
         {assets.map((asset, index) => (
           <li

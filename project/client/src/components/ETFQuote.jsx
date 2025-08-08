@@ -30,8 +30,8 @@ function ETFQuote({symbol, token}) {
         .catch(err => setError(err.message));
     }, [symbol, token]);
 
-    if (error) return <p>Error: {error}</p>;
-    if (!quote) return <p>Loading...</p>;
+    if (error) return <p className="text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded shadow-md">Error: {error}</p>;
+    if (!quote) return <p className="text-gray-700 dark:text-gray-300 p-3 rounded">Loading...</p>;
 
     return (
         <div className="w-full max-w-xl bg-white dark:bg-darkBlue2 rounded-lg shadow-md p-6 border border-gray-300 dark:border-darkBlue3 text-gray-900 dark:text-white">

@@ -88,7 +88,7 @@ const Dashboard = () => {
     return (
         <div className="text-gray-900 dark:text-white">
           {/* Title */}
-          <h1 className="text-4xl font-bold text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
+          <h1 className="text-4xl font-bold text-center text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
             Dashboard
           </h1>
       
@@ -98,7 +98,7 @@ const Dashboard = () => {
           </div>
       
           {/* Portfolios List */}
-          <h2 className="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
+          <h2 className="text-3xl font-bold text-center text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
             Your Portfolios
           </h2>
         
