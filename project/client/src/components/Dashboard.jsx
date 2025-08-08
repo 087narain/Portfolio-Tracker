@@ -28,9 +28,8 @@ const Dashboard = () => {
     };
 
     const handlePortfolioSelection = (portfolio) => {
-        setPickedPortfolioId(portfolio.id); // save id
+        setPickedPortfolioId(portfolio.id); 
       
-        // Use portfolio.id here, NOT portfolio object
         getAllAssets(portfolio.id)
           .then(res => {
             console.log('Assets response:', res.data);
@@ -87,44 +86,58 @@ const Dashboard = () => {
     };
 
     return (
-        <div>
-            <h1 className="text-4xl font-bold text-cyan-400 mb-6 drop-shadow-lg">
-                Dashboard
-            </h1>
-
-            <div className="mb-8">
-                <PortfolioForm onSubmit={handleCreatePortfolio} />
-            </div>
-
-            <h2 className="text-4xl font-bold text-cyan-400 mb-6 drop-shadow-lg">
-                Your Portfolios
-            </h2>
-            <ul>
-                {portfolios.map(p => (
-                    <li key={p.id}>
-                        <button onClick={() => handlePortfolioSelection(p)}>
-                        {p.portfolioName}
-                        </button>
-                    </li>
+        <div className="text-gray-900 dark:text-white">
+          {/* Title */}
+          <h1 className="text-4xl font-bold text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
+            Dashboard
+          </h1>
+      
+          {/* Create Portfolio */}
+          <div className="mb-8">
+            <PortfolioForm onSubmit={handleCreatePortfolio} />
+          </div>
+      
+          {/* Portfolios List */}
+          <h2 className="text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
+            Your Portfolios
+          </h2>
+        
+          {/* Asset List */}
+          {pickedPortfolioId && (
+            <>
+              <h2 className="text-2xl font-semibold mt-8 mb-4">Assets</h2>
+              <button
+                onClick={handleAddAsset}
+                className="px-4 py-2 mb-4 rounded bg-accentBlue text-white hover:bg-accentGreen transition-colors"
+              >
+                Add Asset
+              </button>
+              <ul className="space-y-2">
+                {assets.map((asset) => (
+                  <li
+                    key={`${asset.ticker}-${asset.purchaseTime}`}
+                    className="flex items-center justify-between p-3 rounded bg-gray-100 dark:bg-darkBlue2"
+                  >
+                    <span>
+                      {asset.ticker} - {asset.quantity} priced at: ${asset.purchasePrice}
+                    </span>
+                    <button
+                      onClick={() => handleRemoveAsset(asset.ticker)}
+                      className="text-red-600 hover:text-red-500"
+                    >
+                      Remove
+                    </button>
+                  </li>
                 ))}
-            </ul>
-
-            {pickedPortfolioId && (
-                <>
-                    <h2>Assets</h2>
-                    <button onClick={handleAddAsset}>Add Asset</button>
-                    <ul>
-                        {assets.map(asset => (
-                            <li key={`${asset.ticker}-${asset.purchaseTime}`}>
-                                {asset.ticker} - {asset.quantity} priced at: ${asset.purchasePrice}
-                                <button onClick={() => handleRemoveAsset(asset.ticker)}>Remove</button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <h3>Total Value: ${totalValue !== null ? totalValue : 'Loading...'}</h3>
-                </>
-            )}
+              </ul>
+      
+              {/* Total Value */}
+              <h3 className="text-xl font-bold mt-6">
+                Total Value:{' '}
+                {totalValue !== null ? `$${totalValue}` : 'Loading...'}
+              </h3>
+            </>
+          )}
         </div>
     );
 };

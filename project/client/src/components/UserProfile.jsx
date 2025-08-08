@@ -64,15 +64,15 @@ function UserProfile({ token }) {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-        <div className="user-profile max-w-xl mx-auto p-6 bg-darkBlue2 rounded-lg shadow-md text-white">
-          <h2 className="text-3xl font-bold mb-6">User Profile</h2>
+        <div className="user-profile max-w-xl mx-auto p-6 bg-gray-100 dark:bg-darkBlue2 rounded-lg shadow-md text-white">
+          <h2 className="text-3xl text-black dark:text-white font-bold mb-6">User Profile</h2>
       
-          <label className="block mb-2 text-gray-300 font-semibold">Username:</label>
+          <label className="block mb-2 text-black dark:text-gray-300 font-semibold">Username:</label>
           <input 
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-3 rounded border border-gray-600 bg-darkBlue3 mb-6 text-white focus:outline-none focus:ring-2 focus:ring-accentBlue"
+            className="w-full p-3 rounded border border-gray-600 bg-gray-100 dark:bg-darkBlue3 mb-6 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accentBlue"
           />
       
           <div className="flex justify-start space-x-4">

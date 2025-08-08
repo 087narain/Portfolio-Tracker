@@ -18,6 +18,10 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [showSignup, setShowSignup] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
 
   const handleNewPortfolio = (newPortfolioData) => {
     setPortfolio({
@@ -113,82 +117,103 @@ function App() {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
+  }, [darkMode]);
+
   return (
-    <div className='min-h-screen bg-darkBlue1 flex flex-col items-center justify-between p-6 text-white'>
+    <div className="min-h-screen bg-white dark:bg-darkBlue1 flex flex-col items-center justify-between p-6 text-black dark:text-white">
       <Header />
-      <main className="mt-9 p-6 w-full max-w-2xl bg-darkBlue2 shadow-md rounded-lg">
-      {/* ───────── if NOT logged in ───────── */}
-      {!token && (
-        <>
-          {showSignup ? (
-            <SignupForm onSignup={handleLogin} />
-          ) : (
-            <LoginForm onLogin={handleLogin} />
-          )}
-          <button
-            onClick={() => setShowSignup(prev => !prev)}
-            className="mt-2 text-blue-500 underline"
-          >
-            {showSignup ? "Already have an account? Log in" : "New user? Sign up"}
-          </button>
-        </>
-      )}
-      {/* ───────── if logged in ───────── */}
-      {token && (
-        <>
-          <Dashboard />
-          {error ? (
-            <div className="text-red-500 text-center bg-red-100 p-4 rounded">
-              Failed to reach portfolio value.
-            </div>
-          ) : totalValue === null ? (
-            <div className="text-center text-lg">Loading...</div>
-          ) : (
-            <div className="min-h-screen bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
-              {/* summary */}
-              <div className="w-full max-w-2xl bg-darkBlue3 p-6 rounded-lg shadow-md mb-8">
-                <PortfolioSummary
-                  portfolioName={portfolio.portfolioName}
-                  totalValue={totalValue}
-                />
+  
+      <button
+        onClick={() => setDarkMode(prev => !prev)}
+        className="mb-4 px-4 py-2 rounded bg-accentBlue text-white"
+      >
+        Switch to {darkMode ? 'Light' : 'Dark'} Mode
+      </button>
+  
+      <main className="mt-9 p-6 w-full max-w-2xl bg-gray-100 dark:bg-darkBlue2 shadow-md rounded-lg">
+        {/* ───────── if NOT logged in ───────── */}
+        {!token && (
+          <>
+            {showSignup ? (
+              <SignupForm onSignup={handleLogin} />
+            ) : (
+              <LoginForm onLogin={handleLogin} />
+            )}
+            <button
+              onClick={() => setShowSignup(prev => !prev)}
+              className="mt-2 text-blue-500 underline"
+            >
+              {showSignup ? "Already have an account? Log in" : "New user? Sign up"}
+            </button>
+          </>
+        )}
+  
+        {/* ───────── if logged in ───────── */}
+        {token && (
+          <>
+            <Dashboard />
+            {error ? (
+              <div className="text-red-500 text-center bg-red-100 dark:bg-red-900 p-4 rounded">
+                Failed to reach portfolio value.
               </div>
+            ) : totalValue === null ? (
+              <div className="text-center text-lg">Loading...</div>
+            ) : (
+              <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
+                {/* summary */}
+                <div className="w-full max-w-2xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md mb-8">
+                  <PortfolioSummary
+                    portfolioName={portfolio.portfolioName}
+                    totalValue={totalValue}
+                  />
+                </div>
+  
+                {/* assets */}
+                <div className="w-full max-w-2xl bg-gray-100 dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+                  <AssetList assets={portfolio.assets} />
+                </div>
+  
+                {/* forms */}
+                <div className="w-full max-w-2xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+                  <PortfolioForm onSubmit={handleNewPortfolio} />
+                </div>
+  
+                <div className="w-full max-w-2xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+                  <AssetForm onSubmit={handleNewAsset} />
+                </div>
+  
+                {/* ETF viewer */}
+                <div className="w-full max-w-2xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+                  <ETFViewer token={token} />
+                </div>
+  
+                {/* user profile */}
+                <div>
+                  <UserProfile token={token} />
+                </div>
 
-              {/* assets */}
-              <div className="w-full max-w-2xl bg-darkcard p-6 rounded-lg shadow-md mb-8">
-                <AssetList assets={portfolio.assets} />
+
+                {/* optional logout button */}
+                <button
+                  className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
+                  onClick={handleLogout}
+                >
+                  Log out
+                </button>
               </div>
-
-              {/* forms */}
-              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                <PortfolioForm onSubmit={handleNewPortfolio} />
-              </div>
-
-              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                <AssetForm onSubmit={handleNewAsset} />
-              </div>
-
-              {/* ETF viewer */}
-              <div className="w-full max-w-2xl bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                <ETFViewer token={token} />
-              </div>
-
-              {/* optional logout button */}
-              <button
-                className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
-                onClick={handleLogout}
-              >
-                Log out
-              </button>
-
-              {/* user profile */}
-              <div>
-                <UserProfile token={token} />
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </main>
+            )}
+          </>
+        )}
+      </main>
+  
       <Footer />
     </div>
   );

@@ -17,7 +17,7 @@ function ETFViewer({ token }) {
     };
 
     return (
-        <div className="w-full max-w-xl bg-darkBlue2 shadow-md rounded-lg p-6 text-white">
+        <div className="w-full max-w-xl bg-gray-100 dark:bg-darkBlue2 shadow-md rounded-lg p-6 text-white">
           <h1 className="text-3xl font-bold mb-4 text-accentGreen">ETF Viewer</h1>
           <form onSubmit={handleSubmit} className="flex space-x-3 mb-4">
             <input
@@ -25,7 +25,7 @@ function ETFViewer({ token }) {
               value={symbol}
               onChange={handleInputChange}
               placeholder="Enter ETF Symbol"
-              className="flex-grow p-2 rounded border border-darkBlue3 bg-darkBlue1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accentGreen"
+              className="flex-grow p-2 rounded border border-gray-400 dark:border-darkBlue3 bg-gray-100 dark:bg-darkBlue1 text-black dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accentGreen"
             />
             <button
               type="submit"
