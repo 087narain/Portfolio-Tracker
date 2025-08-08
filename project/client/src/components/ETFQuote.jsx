@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
+
 
 function ETFQuote({symbol, token}) {
     const [quote, setQuote] = useState(null);
@@ -11,6 +13,35 @@ function ETFQuote({symbol, token}) {
     const range = high - low;
     const openPos = ((open - low) / range) * 100;
     const currentPos = ((current - low) / range) * 100;
+
+
+    const data = {
+        labels: ['Low', 'Current Price', 'High'],
+        datasets: [
+        {
+            label: 'Price',
+            data: [low, price, high],
+            backgroundColor: [
+            'rgba(100, 149, 237, 0.5)',  // low - cornflower blue
+            'rgba(0, 191, 165, 0.8)',    // current price - medium aquamarine
+            'rgba(65, 105, 225, 0.5)',   // high - royal blue
+            ],
+        },
+        ],
+    };
+  
+    const options = {
+        scales: {
+        y: {
+            beginAtZero: false,
+            min: Math.min(low, price, high) * 0.95,
+            max: Math.max(low, price, high) * 1.05,
+        },
+        },
+        plugins: {
+        legend: { display: false },
+        },
+    };
 
     useEffect(() => {
         if (!symbol || !token) {
@@ -77,6 +108,9 @@ function ETFQuote({symbol, token}) {
               <span>{high}</span>
             </div>
           </div>
+
+          <Bar data={data} options={options} />
+
         </div>
     );
 }
