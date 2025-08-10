@@ -24,18 +24,18 @@ function ETFBar({ open, low, high, price }) {
         title={`Price range between open (${open}) and current (${price})`}
       />
 
-      {/* Open price marker */}
+      {/* Open price marker line */}
       <div
         className="absolute top-0 bottom-0 w-1 bg-accentBlue rounded"
         style={{ left: `${openPos}%`, transform: 'translateX(-50%)' }}
         title={`Open: ${open}`}
       />
 
-      {/* Current price marker */}
+      {/* Current price marker vertical line */}
       <div
-        className="absolute top-0 bottom-0 w-1 bg-green-800 rounded"
+        className="absolute top-0 bottom-0 w-1 bg-red-500 rounded"
         style={{ left: `${pricePos}%`, transform: 'translateX(-50%)' }}
-        title={`Current: ${price}`}
+        title={`Current Price: ${price}`}
       />
     </div>
   );
