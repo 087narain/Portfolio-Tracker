@@ -4,6 +4,11 @@ function ETFQuote({symbol, token}) {
     const [quote, setQuote] = useState(null);
     const [error, setError] = useState(null);
 
+    const open = parseFloat(quote["02. open"]);
+    const high = parseFloat(quote["03. high"]);
+    const low = parseFloat(quote["04. low"]);
+    const price = parseFloat(quote["05. price"]);
+
     useEffect(() => {
         if (!symbol || !token) {
             return;
