@@ -6,7 +6,7 @@ import AssetList from './components/AssetList';
 import { getTotalValue } from './api/portfolio';
 import PortfolioForm from './components/PortfolioForm';
 import AssetForm from './components/AssetForm';
-import ETFViewer from './components/ETFViewer';
+import StockViewer from './components/StockViewer';
 import LoginForm from './components/LoginForm';
 import UserProfile from './components/UserProfile';
 import SignupForm from './components/SignupForm';
@@ -204,7 +204,7 @@ function App() {
   
                 {/* ETF viewer */}
                 <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                  <ETFViewer token={token} />
+                  <StockViewer token={token} />
                 </div>
   
                 {/* user profile */}

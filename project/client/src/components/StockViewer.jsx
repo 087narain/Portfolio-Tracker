@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ETFQuote from './ETFQuote';
+import StockQuote from './StockQuote';
 
-function ETFViewer({ token }) {
+function StockViewer({ token }) {
     const [symbol, setSymbol] = useState('');
     const [submittedSymbol, setSubmittedSymbol] = useState(null);
 
@@ -34,12 +34,12 @@ function ETFViewer({ token }) {
               Get Quote
             </button>
           </form>
-          {submittedSymbol && <ETFQuote symbol={submittedSymbol} token={token} />}
+          {submittedSymbol && <StockQuote symbol={submittedSymbol} token={token} />}
         </div>
     );
 }
 
-export default ETFViewer;
+export default StockViewer;
 
 
 
