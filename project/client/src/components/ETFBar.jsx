@@ -1,29 +1,43 @@
-function ETFBar({ low, high, price }) {
-    const range = high - low;
-    const percentage = ((price - low) / range) * 100;
-    const position = ((price - low) / range) * 100;
-    const barStyle = {
-        width: `${percentage}%`,
-        backgroundColor: price > high ? 'red' : price < low ? 'green' : 'blue',
-        height: '20px',
-        borderRadius: '5px',
-    };
+function ETFBar({ open, low, high, price }) {
+    if ([low, high, open, price].some(v => typeof v !== 'number' || isNaN(v))) return null;
+  if (high <= low) return null;
 
-    if (range <= 0) {
-        return <p className="text-red-500">Insufficient price range for ETF Bar.</p>;
-    }
+  const range = high - low;
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
-    return(
-        <div className="w-full bg-gray-300 dark:bg-darkBlue3 rounded-full h-4 relative mt-4">
-            {/* Full range bar */}
-            <div className="absolute top-0 left-0 h-4 w-full bg-gray-400 dark:bg-darkBlue2 rounded-full"></div>
+  const openPos = clamp(((open - low) / range) * 100, 0, 100);
+  const pricePos = clamp(((price - low) / range) * 100, 0, 100);
 
-            {/* Current price indicator */}
-            <div
-                className="absolute top-0 h-4 w-1 bg-accentGreen rounded-full"
-                style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
-                title={`Current Price: ${price}`}
-            />
-        </div>
-    );
+  // Ensure pricePos is not less than openPos for the fill width calculation
+  const fillStart = Math.min(openPos, pricePos);
+  const fillWidth = Math.abs(pricePos - openPos);
+
+  return (
+    <div className="relative w-full h-6 bg-gray-300 dark:bg-darkBlue3 rounded-full">
+      {/* Full range bar */}
+      <div className="absolute inset-0 bg-gray-400 dark:bg-darkBlue4 rounded-full" />
+
+      {/* Filled portion between open and current price */}
+      <div
+        className="absolute top-0 bottom-0 bg-accentGreen rounded"
+        style={{ left: `${fillStart}%`, width: `${fillWidth}%` }}
+        title={`Price range between open (${open}) and current (${price})`}
+      />
+
+      {/* Open price marker */}
+      <div
+        className="absolute top-0 bottom-0 w-1 bg-accentBlue rounded"
+        style={{ left: `${openPos}%`, transform: 'translateX(-50%)' }}
+        title={`Open: ${open}`}
+      />
+
+      {/* Current price marker */}
+      <div
+        className="absolute top-0 bottom-0 w-1 bg-green-800 rounded"
+        style={{ left: `${pricePos}%`, transform: 'translateX(-50%)' }}
+        title={`Current: ${price}`}
+      />
+    </div>
+  );
 }
+export default ETFBar;
