@@ -91,16 +91,6 @@ const Dashboard = () => {
           <h1 className="text-4xl font-bold text-center text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
             Dashboard
           </h1>
-      
-          {/* Create Portfolio */}
-          <div className="mb-8">
-            <PortfolioForm onSubmit={handleCreatePortfolio} />
-          </div>
-      
-          {/* Portfolios List */}
-          <h2 className="text-3xl font-bold text-center text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
-            Your Portfolios
-          </h2>
         
           {/* Asset List */}
           {pickedPortfolioId && (
