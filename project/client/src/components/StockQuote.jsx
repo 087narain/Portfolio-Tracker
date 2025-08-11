@@ -68,22 +68,27 @@ function StockQuote({symbol, token}) {
               <StockBar low={low} high={high} open={open} price={price} />
             </div>
 
+            
             {/* Change Percent Badge */}
             <div
             className={`
-                w-20 h-20 rounded-full flex items-center justify-center font-semibold text-3xl
+                w-32 h-32 rounded-lg flex flex-col items-center justify-center font-semibold text-2xl
+                shadow-md
                 ${
                 isPositive
-                    ? "bg-green-500 text-white"
+                    ? "bg-green-700 text-white"
                     : isNegative
-                    ? "bg-red-500 text-white"
-                    : "bg-gray-400 text-gray-900"
+                    ? "bg-red-700 text-white"
+                    : "bg-gray-300 text-gray-800"
                 }
             `}
-            title={`Change Percent: ${changePercentString}`}
             >
-            {isPositive ? "▲" : isNegative ? "▼" : ""}
-            {changePercentString}
+            <span>
+                {isPositive ? "🔥" : isNegative ? "📉" : "😐"}
+            </span>
+            <span className="text-sm mt-1">
+                {changePercent} %
+            </span>
             </div>
             
           </div>

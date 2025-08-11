@@ -9,6 +9,7 @@ export default function AssetForm({ onSubmit, portfolios }) {
     const [selectedPortfolioId, setSelectedPortfolioId] = useState(portfolios?.[0]?.id || '');
     
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,6 +41,9 @@ export default function AssetForm({ onSubmit, portfolios }) {
         };
 
         onSubmit(assetData);
+        setSuccessMessage('Asset added successfully!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+
 
         setTicker('');
         setQuantity('');
@@ -49,101 +53,114 @@ export default function AssetForm({ onSubmit, portfolios }) {
     };
 
     return (
-        <form 
-          onSubmit={handleSubmit} 
-          className="bg-gray-100 dark:bg-darkBlue3 shadow-md rounded-lg p-6 w-full text-gray-900 dark:text-white"
-        >
-          <h2 className="text-2xl text-center font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
-          <div className="mb-4">
-                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="portfolioSelect">
-                Select Portfolio
-                </label>
-                <select
-                id="portfolioSelect"
-                value={selectedPortfolioId}
-                onChange={(e) => setSelectedPortfolioId(e.target.value)}
+        <>
+            {successMessage && (
+                <div className="mb-4 bg-green-600 text-white p-3 rounded shadow">
+                {successMessage}
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="mb-4 bg-red-600 text-white p-3 rounded shadow">
+                {errorMessage}
+                </div>
+            )}
+            <form 
+            onSubmit={handleSubmit} 
+            className="bg-gray-100 dark:bg-darkBlue3 shadow-md rounded-lg p-6 w-full text-gray-900 dark:text-white"
+            >
+            <h2 className="text-2xl text-center font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
+            <div className="mb-4">
+                    <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="portfolioSelect">
+                    Select Portfolio
+                    </label>
+                    <select
+                    id="portfolioSelect"
+                    value={selectedPortfolioId}
+                    onChange={(e) => setSelectedPortfolioId(e.target.value)}
+                    className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                    required
+                    >
+                    {portfolios && portfolios.map(p => (
+                        console.log(p.portfolioName),
+                        <option key={p.id} value={p.id}>
+                        {p.portflioName || "Unnamed Portfolio"}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+        
+            <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="ticker">Ticker</label>
+                <input
+                type="text"
+                id="ticker"
+                value={ticker}
+                onChange={(e) => setTicker(e.target.value)}
                 className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
                 required
+                />
+            </div>
+        
+            <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="quantity">Quantity</label>
+                <input
+                type="number"
+                id="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                required
+                />
+            </div>
+        
+            <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="purchasePrice">Purchase Price</label>
+                <input
+                type="number"
+                id="purchasePrice"
+                value={purchasePrice}
+                onChange={(e) => setPurchasePrice(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                required
+                />
+            </div>
+        
+            <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="purchaseTime">Date of Purchase</label>
+                <input
+                type="date"
+                value={purchaseTime}
+                onChange={(e) => setPurchaseTime(e.target.value)}
+                className="w-full border border-gray-300 dark:border-darkBlue2 p-2 rounded mt-1 bg-white dark:bg-darkBlue1 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                />
+            </div>
+        
+            <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="type">Asset Type</label>
+                <select
+                id="type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
                 >
-                {portfolios && portfolios.map(p => (
-                    console.log(p.portfolioName),
-                    <option key={p.id} value={p.id}>
-                    {p.portflioName || "Unnamed Portfolio"}
-                    </option>
-                ))}
+                <option value="Stock">Stock</option>
+                <option value="Bond">Bond</option>
+                <option value="ETF">ETF</option>
+                <option value="Mutual Fund">Mutual Fund</option>
+                <option value="Crypto">Crypto</option>
                 </select>
             </div>
-      
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="ticker">Ticker</label>
-            <input
-              type="text"
-              id="ticker"
-              value={ticker}
-              onChange={(e) => setTicker(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
-              required
-            />
-          </div>
-      
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="quantity">Quantity</label>
-            <input
-              type="number"
-              id="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
-              required
-            />
-          </div>
-      
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="purchasePrice">Purchase Price</label>
-            <input
-              type="number"
-              id="purchasePrice"
-              value={purchasePrice}
-              onChange={(e) => setPurchasePrice(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
-              required
-            />
-          </div>
-      
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="purchaseTime">Date of Purchase</label>
-            <input
-              type="date"
-              value={purchaseTime}
-              onChange={(e) => setPurchaseTime(e.target.value)}
-              className="w-full border border-gray-300 dark:border-darkBlue2 p-2 rounded mt-1 bg-white dark:bg-darkBlue1 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
-            />
-          </div>
-      
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="type">Asset Type</label>
-            <select
-              id="type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+        
+            {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+        
+            <button
+                type="submit"
+                className="w-full bg-accentBlue hover:bg-accentGreen text-white p-2 rounded transition-colors"
             >
-              <option value="Stock">Stock</option>
-              <option value="Bond">Bond</option>
-              <option value="ETF">ETF</option>
-              <option value="Mutual Fund">Mutual Fund</option>
-              <option value="Crypto">Crypto</option>
-            </select>
-          </div>
-      
-          {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-      
-          <button
-            type="submit"
-            className="w-full bg-accentBlue hover:bg-accentGreen text-white p-2 rounded transition-colors"
-          >
-            Add Asset
-          </button>
-        </form>
+                Add Asset
+            </button>
+            </form>
+        </>
     );
 }
