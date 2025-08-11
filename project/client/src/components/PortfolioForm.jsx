@@ -5,34 +5,58 @@ export default function PortfolioForm({ onSubmit }) {
     const [balance, setBalance] = useState(0.0);
     const [currency, setCurrency] = useState('USD');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
+    const token = localStorage.getItem("token");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+      
         if (!portfolioName.trim() || !currency || !balance) {
-            setErrorMessage('Please fill in all fields.');
-            return;
+          setErrorMessage('Please fill in all fields.');
+          return;
         }
-
+      
         if (isNaN(balance) || balance < 0) {
-            setErrorMessage('Balance must be a valid non-negative number.');
-            return;
+          setErrorMessage('Balance must be a valid non-negative number.');
+          return;
         }
-
+      
         setErrorMessage('');
-        
+        setSuccessMessage('');
+      
         const portfolioData = {
-            portfolioName,
-            balance: parseFloat(balance),
-            currency
+          portfolioName,
+          balance: parseFloat(balance),
+          currency,
         };
-
-        onSubmit(portfolioData);
-        
-        setPortfolioName('');
-        setBalance('');
-        setCurrency('');
+      
+        try {
+          const response = await fetch('http://localhost:8080/api/portfolio/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(portfolioData)
+          });
+      
+          if (!response.ok) {
+            throw new Error('Failed to create portfolio. Please try again.');
+          }
+      
+          const data = await response.json();
+          console.log('Portfolio created successfully:', data);
+          onSubmit(data); // Call onSubmit with the returned portfolio
+      
+          setSuccessMessage('Portfolio created successfully!');
+          setPortfolioName('');
+          setBalance(0.0);
+          setCurrency('USD');
+        } catch (err) {
+          console.error('Error creating portfolio:', err);
+          setErrorMessage(err.message || 'An error occurred while creating the portfolio.');
+        }
     };
 
     return (
@@ -80,12 +104,23 @@ export default function PortfolioForm({ onSubmit }) {
               Currency
             </label>
             <select
-              id="currency"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                id="currency"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
             >
-              {/* options */}
+                {/* options */}
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+                <option value="CHF">CHF</option>
+                <option value="CNY">CNY</option>
+                <option value="INR">INR</option>
+                <option value="SGD">SGD</option>
+                <option value="AUD">AUD</option>
+                <option value="CAD">CAD</option>
+                
             </select>
           </div>
       
