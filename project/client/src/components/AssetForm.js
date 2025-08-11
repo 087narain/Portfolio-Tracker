@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
-export default function AssetForm({ onSubmit }) {
+export default function AssetForm({ onSubmit, portfolios }) {
     const [ticker, setTicker] = useState('');
     const [quantity, setQuantity] = useState('');
     const [purchasePrice, setPurchasePrice] = useState('');
     const [purchaseTime, setPurchaseTime] = useState('');
     const [type, setType] = useState('Stock');
+    const [selectedPortfolioId, setSelectedPortfolioId] = useState(portfolios?.[0]?.id || '');
     
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!ticker.trim() || !quantity || !purchasePrice || !purchaseTime) {
-            setErrorMessage('Please fill in all fields.');
+        if (!ticker.trim() || !quantity || !purchasePrice || !purchaseTime || !selectedPortfolioId) {
+            setErrorMessage('Please fill in all fields and select a portfolio.');
             return;
         }
 
@@ -34,7 +35,8 @@ export default function AssetForm({ onSubmit }) {
             quantity: parseFloat(quantity),
             purchasePrice: parseFloat(purchasePrice),
             purchaseTime: `${purchaseTime}T00:00:00`,
-            type
+            type,
+            portfolioId: selectedPortfolioId,
         };
 
         onSubmit(assetData);
@@ -52,6 +54,25 @@ export default function AssetForm({ onSubmit }) {
           className="bg-gray-100 dark:bg-darkBlue3 shadow-md rounded-lg p-6 w-full text-gray-900 dark:text-white"
         >
           <h2 className="text-2xl text-center font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
+          <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="portfolioSelect">
+                Select Portfolio
+                </label>
+                <select
+                id="portfolioSelect"
+                value={selectedPortfolioId}
+                onChange={(e) => setSelectedPortfolioId(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-darkBlue2 bg-white dark:bg-darkBlue1 rounded text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-accentGreen"
+                required
+                >
+                {portfolios && portfolios.map(p => (
+                    console.log(p.portfolioName),
+                    <option key={p.id} value={p.id}>
+                    {p.portflioName || "Unnamed Portfolio"}
+                    </option>
+                ))}
+                </select>
+            </div>
       
           <div className="mb-4">
             <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="ticker">Ticker</label>

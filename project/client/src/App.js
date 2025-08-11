@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PortfolioSummary from './components/PortfolioSummary';
@@ -19,6 +19,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [showSignup, setShowSignup] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [userPortfolios, setUserPortfolios] = useState([]);
   
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('darkMode') === 'true';
@@ -96,6 +97,28 @@ function App() {
 
     fetchValue();
   }, [portfolio]);
+
+  useEffect(() => {
+    async function fetchPortfolios() {
+      try {
+        const res = await fetch("http://localhost:8080/api/portfolio/my-portfolios", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error("Failed to fetch portfolios");
+        const data = await res.json();
+        console.log('Portfolios fetched:', data);
+        setUserPortfolios(data);
+      } catch (err) {
+        console.error("Error fetching portfolios:", err);
+      }
+    }
+
+    if (token) {
+      fetchPortfolios();
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -199,7 +222,7 @@ function App() {
                 </div>
   
                 <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                  <AssetForm onSubmit={handleNewAsset} />
+                  <AssetForm portfolios={userPortfolios} onSubmit={handleNewAsset} />
                 </div>
   
                 {/* ETF viewer */}
