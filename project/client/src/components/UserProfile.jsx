@@ -5,6 +5,7 @@ function UserProfile({ token }) {
     const [username, setUsername] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('')
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/user/profile`, {
@@ -69,13 +70,22 @@ function UserProfile({ token }) {
 
     const handleDelete = async () => {
         try {
-            await fetch(`http://localhost:8080/api/user/profile`, {
+            const response = await fetch(`http://localhost:8080/api/user/profile`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete account.');
+            }
+
+            setSuccessMessage('Account deleted successfully!');
             localStorage.removeItem('token');
+            setTimeout(() => {
+                window.location.href = '/login'; 
+            }, 1500);
         } catch (err) {
             setErrorMessage(err.message);
         }
@@ -122,6 +132,34 @@ function UserProfile({ token }) {
                     </button>
                 </div>
             </div>
+            {showConfirmModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-lg w-96">
+                        <h3 className="text-lg font-bold text-red-600">Confirm Deletion</h3>
+                        <p className="mt-2 text-gray-700 dark:text-gray-300">
+                            Are you sure you want to delete your account? This action cannot be undone.
+                        </p>
+
+                        <div className="mt-4 flex justify-end space-x-4">
+                            <button
+                                onClick={() => setShowConfirmModal(false)}
+                                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setShowConfirmModal(false);
+                                    handleDelete();
+                                }}
+                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                            >
+                                Yes, Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
