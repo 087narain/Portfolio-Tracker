@@ -1,6 +1,7 @@
 package com.narain.portfoliotracker.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -83,8 +84,16 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<User> updateProfile(@RequestBody User updatedUser, Principal principal) {
-        return ResponseEntity.ok(userService.updateUser(principal.getName(), updatedUser));
+    public ResponseEntity<?> updateProfile(@RequestBody User updatedUser, Principal principal) {
+        User savedUser = userService.updateUser(principal.getName(), updatedUser);
+
+        String newToken = jwtService.generateToken(savedUser.getUsername()); 
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", savedUser);
+        response.put("token", newToken);    
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
