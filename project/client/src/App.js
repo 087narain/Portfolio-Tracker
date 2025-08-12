@@ -52,7 +52,7 @@ function App() {
   };
 
   const [portfolio, setPortfolio] = useState({
-    id: "5190e2cc-3e34-4d44-b839-22c603de41c4",
+    id: "9734da6b-c47a-4e29-85f9-8b4b5b264034",
     portfolioName: "Dummy Portfolio",
     creationDate: "2025-07-15T12:00:00",
     totalValue: 0.0,
