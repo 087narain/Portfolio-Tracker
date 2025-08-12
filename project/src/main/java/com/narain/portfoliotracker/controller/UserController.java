@@ -97,13 +97,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID id, Principal principal) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id, Principal principal) {
         User user = userService.getUserById(id);
         if (!user.getUsername().equals(principal.getName())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not authorized to delete this user.");
         }
 
         userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully");
+        return ResponseEntity.ok(Map.of("message", "Account deleted successfully"));
     }
 }
