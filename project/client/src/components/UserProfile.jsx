@@ -32,7 +32,7 @@ function UserProfile({ token }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ username: setUsername })
+                body: JSON.stringify({ username })
             });
 
             if (!response.ok) {
@@ -55,7 +55,6 @@ function UserProfile({ token }) {
                 }
             });
             localStorage.removeItem('token');
-            window.location.reload(); 
         } catch (err) {
             setError(err.message);
         }

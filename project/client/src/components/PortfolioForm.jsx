@@ -49,7 +49,7 @@ export default function PortfolioForm({ onSubmit }) {
           console.log('Portfolio created successfully:', data);
           onSubmit(data); // Call onSubmit with the returned portfolio
       
-          setSuccessMessage('Portfolio created successfully!');
+          setSuccessMessage('Portfolio uccessfully!');
           setPortfolioName('');
           setBalance(0.0);
           setCurrency('USD');
