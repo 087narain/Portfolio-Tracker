@@ -142,7 +142,7 @@ function App() {
     <div className="min-h-screen bg-white dark:bg-darkBlue1 flex flex-col items-center justify-between p-6 text-black dark:text-white">
       <header className="bg-white dark:bg-darkBlue2 shadow-md rounded-lg p-6 w-full max-w-6xl mx-auto flex items-center justify-between">
       <div className="flex-1 flex-grow">
-      <h1 className="text-3xl font-bold w-1.2 text-center">
+      <h1 className="text-3xl font-bold font-poppins w-1.2 text-center">
         📊 Your Portfolio
       </h1>
       </div>
@@ -151,7 +151,7 @@ function App() {
           {/* Static label */}
           <div
             className="flex items-center gap-2 cursor-pointer select-none px-3 py-1 rounded-md
-                      bg-accentBlue dark:bg-accentGreen font-semibold
+                      bg-accentBlue dark:bg-accentGreen font-semibold font-poppins
                       text-black shadow-md
                       hover:brightness-110 transition"
             onClick={() => setDarkMode(prev => !prev)}
@@ -190,7 +190,7 @@ function App() {
               <div className="text-center text-lg">You have no portfolios yet.</div>
             ) : (
               <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
-                  <h2 className="text-3xl font-bold text-black dark:text-accentBlue mb-4">
+                  <h2 className="text-3xl font-poppins font-extrabold text-black dark:text-accentBlue mb-4">
                     Your Portfolios
                   </h2>
 

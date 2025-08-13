@@ -26,7 +26,9 @@ module.exports = {
         '72': '18rem',
       },
       fontFamily: {
+        // 'sans' is the default class for Tailwind's sans-serif
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        poppins: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
     },
   },

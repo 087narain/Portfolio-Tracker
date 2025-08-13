@@ -18,7 +18,7 @@ function StockViewer({ token }) {
 
     return (
         <div className="w-full bg-gray-100 dark:bg-darkBlue2 shadow-md rounded-lg p-6 text-white">
-          <h1 className="text-3xl text-center font-bold mb-4 text-accentGreen">Stock Viewer</h1>
+          <h1 className="text-3xl text-center font-poppins font-bold mb-4 text-accentGreen">Stock Viewer</h1>
           <form onSubmit={handleSubmit} className="flex space-x-3 mb-4">
             <input
               type="text"
@@ -29,7 +29,7 @@ function StockViewer({ token }) {
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-accentBlue rounded hover:bg-accentGreen transition-colors"
+              className="px-4 py-2 font-poppins bg-accentBlue rounded hover:bg-accentGreen transition-colors"
             >
               Get Quote
             </button>

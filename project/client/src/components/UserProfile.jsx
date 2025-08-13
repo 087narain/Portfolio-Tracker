@@ -108,9 +108,9 @@ function UserProfile({ token }) {
           )}
       
           <div className="user-profile w-full mx-auto p-6 bg-gray-100 dark:bg-darkBlue2 rounded-lg shadow-md text-white">
-            <h2 className="text-3xl text-black text-center dark:text-white font-bold mb-6">User Profile</h2>
+            <h2 className="text-3xl text-black text-center dark:text-white font-poppins font-bold mb-6">User Profile</h2>
       
-            <label className="block mb-2 text-black dark:text-gray-300 font-semibold">Username:</label>
+            <label className="block mb-2 text-black font-poppins dark:text-gray-300 font-semibold">Username:</label>
             <input 
               type="text"
               value={username}
@@ -121,13 +121,13 @@ function UserProfile({ token }) {
             <div className="flex justify-start space-x-4">
               <button 
                 onClick={handleUpdate} 
-                className="bg-accentBlue hover:bg-accentGreen transition-colors px-6 py-3 rounded font-semibold"
+                className="bg-accentBlue font-poppins hover:bg-accentGreen transition-colors px-6 py-3 rounded font-semibold"
               >
                 Update
               </button>
               <button 
                 onClick={() => setShowConfirmModal(true)}  // open modal here
-                className="text-red-500 hover:text-red-600 transition-colors font-semibold"
+                className="text-red-500 hover:text-red-600 transition-colors font-poppins font-semibold"
               >
                 Delete Account
               </button>

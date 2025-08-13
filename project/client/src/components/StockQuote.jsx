@@ -47,11 +47,11 @@ function StockQuote({symbol, token}) {
 
     return (
         <div className="w-full bg-white dark:bg-darkBlue2 rounded-lg shadow-md p-6 border border-gray-300 dark:border-darkBlue3 text-gray-900 dark:text-white">
-          <h2 className="text-2xl font-bold mb-4 text-accentBlue">Stock Quote</h2>
+          <h2 className="text-2xl font-bold mb-4 font-poppins text-accentBlue">Stock Quote (values given in USD) </h2>
       
           <div className="flex flex-row gap-8">
             {/* Left: Raw Data */}
-            <div className="flex-1">
+            <div className="flex-1 font-poppins">
               <p><strong>Open:</strong> {quote["02. open"]}</p>
               <p><strong>High:</strong> {quote["03. high"]}</p>
               <p><strong>Low:</strong> {quote["04. low"]}</p>
