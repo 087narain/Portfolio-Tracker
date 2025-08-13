@@ -190,10 +190,14 @@ function App() {
               <div className="text-center text-lg">You have no portfolios yet.</div>
             ) : (
               <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
+                  <h2 className="text-3xl font-bold text-black dark:text-accentBlue mb-4">
+                    Your Portfolios
+                  </h2>
+
                 {userPortfolios.map(p => (
                   <div key={p.id} className="w-full max-w-6xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md">
                     {/* Portfolio summary */}
-                    
+
                     <PortfolioSummary
                       portfolioName={p.portflioName}
                       totalValue={p.totalValue}
