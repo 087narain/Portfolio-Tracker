@@ -26,20 +26,25 @@ function App() {
   });
 
   const handleNewPortfolio = (newPortfolioData) => {
-    setPortfolio({
+    const newPortfolio = {
       ...newPortfolioData,
+      id: crypto.randomUUID(),
       creationDate: new Date().toISOString(),
       totalValue: 0.0,
-      assets: []
-    });
+      assets: [] 
+    };
+    setUserPortfolios(prev => [...prev, newPortfolio]);
   };
 
-  const handleNewAsset = (newAssetData) => {
-    setPortfolio(prevPortfolio => ({
-      ...prevPortfolio,
-      assets: [...prevPortfolio.assets, newAssetData],
-    }));
-  }
+  const handleNewAsset = (portfolioId, newAssetData) => {
+    setUserPortfolios(prev =>
+      prev.map(p =>
+        p.id === portfolioId
+          ? { ...p, assets: [...(p.assets || []), newAssetData] }
+          : p
+      )
+    );
+  };
 
   const handleLogin = (newToken) => {
     localStorage.setItem('token', newToken);
@@ -51,67 +56,48 @@ function App() {
     setToken(null);
   };
 
-  const [portfolio, setPortfolio] = useState({
-    id: "9734da6b-c47a-4e29-85f9-8b4b5b264034",
-    portfolioName: "Dummy Portfolio",
-    creationDate: "2025-07-15T12:00:00",
-    totalValue: 0.0,
-    balance: 1000.0,
-    currency: "USD",
-    assets: [
-      {
-        ticker: "AAPL",
-        quantity: 10,
-        purchasePrice: 150.0,
-        purchaseTime: "2025-07-14T10:00:00",
-        type: "Stock"
-      },
-      {
-        ticker: "TSLA",
-        quantity: 5,
-        purchasePrice: 200.0,
-        purchaseTime: "2025-07-14T10:00:00",
-        type: "Stock"
-      }
-    ]
-  });
-
   useEffect(() => {
-    console.log('Portfolio updated:', portfolio);
-    if (!portfolio || !portfolio.assets || portfolio.assets.length === 0) {
-      return;
-    }
-
-    const fetchValue = async () => {
-      console.log("useEffect triggered, portfolio:", portfolio);
+    if (userPortfolios.length === 0) return;
+  
+    const fetchValues = async () => {
       try {
-        console.log("Sending portfolio:", portfolio);
-        const result = await getTotalValue(portfolio.id);
-        console.log("Axios response:", result);
-        setTotalValue(result.data.totalValue);
+        const updatedPortfolios = await Promise.all(
+          userPortfolios.map(async (p) => {
+            const result = await getTotalValue(p.id);
+            return { ...p, totalValue: result.data.totalValue };
+          })
+        );
+        setUserPortfolios(updatedPortfolios);
       } catch (err) {
-        console.error("API error caught in App.js:", err);
+        console.error("Error fetching portfolio values:", err);
         setError(true);
       }
     };
-
-    fetchValue();
-  }, [portfolio]);
+  
+    fetchValues();
+  }, [userPortfolios.length]);
 
   useEffect(() => {
     async function fetchPortfolios() {
+      if (!token) return;
       try {
         const res = await fetch("http://localhost:8080/api/portfolio/my-portfolios", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Failed to fetch portfolios");
+  
         const data = await res.json();
-        console.log('Portfolios fetched:', data);
-        setUserPortfolios(data);
+  
+        // Ensure all portfolios have an assets array
+        const normalized = data.map(p => ({
+          ...p,
+          assets: p.assets || p.allAssets || []  // handle backend field
+        }));
+  
+        setUserPortfolios(normalized);
       } catch (err) {
         console.error("Error fetching portfolios:", err);
+        setError(true);
       }
     }
 
@@ -199,43 +185,45 @@ function App() {
               <div className="text-red-500 text-center bg-red-100 dark:bg-red-900 p-4 rounded">
                 Failed to reach portfolio value.
               </div>
-            ) : totalValue === null ? (
-              <div className="text-center text-lg">Loading...</div>
+            ) : userPortfolios.length === 0 ? (
+              <div className="text-center text-lg">You have no portfolios yet.</div>
             ) : (
               <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
-                {/* summary */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md mb-8">
-                  <PortfolioSummary
-                    portfolioName={portfolio.portfolioName}
-                    totalValue={totalValue}
-                  />
-                </div>
-  
-                {/* assets */}
-                <div className="w-full max-w-6xl bg-gray-100 dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                  <AssetList assets={portfolio.assets} />
-                </div>
-  
-                {/* forms */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+                {userPortfolios.map(p => (
+                  <div key={p.id} className="w-full max-w-6xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md">
+                    {/* Portfolio summary */}
+                    <PortfolioSummary
+                      portfolioName={p.portfolioName}
+                      totalValue={p.totalValue}
+                    />
+
+                    {/* Assets */}
+                    <AssetList assets={p.assets || []} />
+
+                    {/* Forms to add new assets to this portfolio */}
+                    <AssetForm
+                      portfolios={[p]}  // pass only this portfolio to the form
+                      onSubmit={(assetData) => handleNewAsset(p.id, assetData)}
+                    />
+                  </div>
+                ))}
+
+                {/* Form to create a new portfolio */}
+                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
                   <PortfolioForm onSubmit={handleNewPortfolio} />
                 </div>
-  
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
-                  <AssetForm portfolios={userPortfolios} onSubmit={handleNewAsset} />
-                </div>
-  
-                {/* ETF viewer */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+
+                {/* Stock viewer */}
+                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
                   <StockViewer token={token} />
                 </div>
-  
-                {/* user profile */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md mb-8">
+
+                {/* User profile */}
+                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
                   <UserProfile token={token} />
                 </div>
-  
-                {/* optional logout button */}
+
+                {/* Logout button */}
                 <button
                   className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
                   onClick={handleLogout}

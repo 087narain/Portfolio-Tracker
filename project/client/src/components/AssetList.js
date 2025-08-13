@@ -1,4 +1,13 @@
 export default function AssetList({ assets }) {
+
+  if (!assets || assets.length === 0) {
+    return (
+      <div className="text-gray-500 dark:text-gray-400 text-center mt-4">
+        No assets found. Please add some assets to your portfolio.
+      </div>
+    );
+  }
+
   return (
     <div className="text-gray-900 dark:text-white">
       <h3 className="text-xl text-center font-semibold mt-4">Assets</h3>
