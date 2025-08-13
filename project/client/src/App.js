@@ -29,6 +29,7 @@ function App() {
     const newPortfolio = {
       ...newPortfolioData,
       id: crypto.randomUUID(),
+      portfolioName: newPortfolioData.portfolioName || 'New Portfolio',
       creationDate: new Date().toISOString(),
       totalValue: 0.0,
       assets: [] 
@@ -192,9 +193,11 @@ function App() {
                 {userPortfolios.map(p => (
                   <div key={p.id} className="w-full max-w-6xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md">
                     {/* Portfolio summary */}
+                    
                     <PortfolioSummary
-                      portfolioName={p.portfolioName}
+                      portfolioName={p.portflioName}
                       totalValue={p.totalValue}
+                      currency={p.currency || 'No currency selected.'}
                     />
 
                     {/* Assets */}

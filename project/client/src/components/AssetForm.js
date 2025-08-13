@@ -72,7 +72,7 @@ export default function AssetForm({ onSubmit, portfolios }) {
             <h2 className="text-2xl text-center font-bold mb-4 text-accentBlue">Add New Asset 📈</h2>
             <div className="mb-4">
                     <label className="block text-gray-700 dark:text-gray-300 mb-2" htmlFor="portfolioSelect">
-                    Select Portfolio
+                    Portfolio
                     </label>
                     <select
                     id="portfolioSelect"
