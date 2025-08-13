@@ -88,8 +88,8 @@ const Dashboard = () => {
     return (
         <div className="text-gray-900 dark:text-white">
           {/* Title */}
-          <h1 className="text-4xl font-semibold tracking-tight font-sans text-center text-cyan-600 dark:text-cyan-400 mb-6 drop-shadow-lg">
-            Dashboard
+          <h1 className="text-4xl font-extrabold tracking-normal font-inter text-center text-cyan-600 dark:text-cyan-400 mb-6">
+            Portfolio Dashboard
           </h1>
         
           {/* Asset List */}

@@ -2,3 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 @import "@fontsource/inter"; 
+@import "@fontsource/roboto";
+@import "@fontsource/poppins";
