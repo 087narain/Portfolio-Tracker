@@ -78,6 +78,23 @@ function App() {
     fetchValues();
   }, [userPortfolios.length]);
 
+  const testAlphaVantageSpeed = async (symbol) => {
+    try {
+      const start = performance.now();
+      const response = await fetch(`http://localhost:8080/api/alphavantage/etf/${symbol}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      const end = performance.now();
+      console.log(`AlphaVantage API call took ${(end - start).toFixed(2)} ms`);
+      console.log('Data:', data);
+    } catch (err) {
+      console.error('Error fetching AlphaVantage data:', err);
+    }
+  };
+
   useEffect(() => {
     async function fetchPortfolios() {
       if (!token) return;
@@ -233,6 +250,10 @@ function App() {
             <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
               <StockViewer token={token} />
             </div>
+
+            {/* <button onClick={() => testAlphaVantageSpeed("AAPL")}>
+              Test API Speed
+            </button> */}
 
             {/* User profile */}
             <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
