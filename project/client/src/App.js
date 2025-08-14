@@ -180,24 +180,32 @@ function App() {
   
         {/* ───────── if logged in ───────── */}
         {token && (
-          <>
-            <Dashboard />
-            {error ? (
-              <div className="text-red-500 text-center bg-red-100 dark:bg-red-900 p-4 rounded">
-                Failed to reach portfolio value.
-              </div>
-            ) : userPortfolios.length === 0 ? (
-              <div className="text-center text-lg">You have no portfolios yet.</div>
-            ) : (
-              <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
-                  <h2 className="text-3xl font-poppins font-extrabold text-black dark:text-accentBlue mb-4">
-                    Your Portfolios
-                  </h2>
+        <>
+          <Dashboard />
+
+          {error && (
+            <div className="text-red-500 text-center bg-red-100 dark:bg-red-900 p-4 rounded">
+              Failed to reach portfolio value.
+            </div>
+          )}
+
+          <div className="min-h-screen bg-gray-50 dark:bg-darkBlue3 p-6 flex flex-col items-center mt-2 space-y-8">
+
+            {/* Always show create portfolio form */}
+            <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
+              <PortfolioForm onSubmit={handleNewPortfolio} />
+            </div>
+
+            {/* Show portfolio list if available */}
+            {userPortfolios.length > 0 ? (
+              <>
+                <h2 className="text-3xl font-poppins font-extrabold text-black dark:text-accentBlue mb-4">
+                  Your Portfolios
+                </h2>
 
                 {userPortfolios.map(p => (
                   <div key={p.id} className="w-full max-w-6xl bg-white dark:bg-darkBlue3 p-6 rounded-lg shadow-md">
                     {/* Portfolio summary */}
-
                     <PortfolioSummary
                       portfolioName={p.portflioName}
                       totalValue={p.totalValue}
@@ -209,38 +217,39 @@ function App() {
 
                     {/* Forms to add new assets to this portfolio */}
                     <AssetForm
-                      portfolios={[p]}  // pass only this portfolio to the form
+                      portfolios={[p]}
                       onSubmit={(assetData) => handleNewAsset(p.id, assetData)}
                     />
                   </div>
                 ))}
-
-                {/* Form to create a new portfolio */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
-                  <PortfolioForm onSubmit={handleNewPortfolio} />
-                </div>
-
-                {/* Stock viewer */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
-                  <StockViewer token={token} />
-                </div>
-
-                {/* User profile */}
-                <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
-                  <UserProfile token={token} />
-                </div>
-
-                {/* Logout button */}
-                <button
-                  className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
-                  onClick={handleLogout}
-                >
-                  Log out
-                </button>
+              </>
+            ) : (
+              <div className="text-center text-lg">
+                You don’t have any portfolios yet. Add one above!
               </div>
             )}
-          </>
-        )}
+
+            {/* Stock viewer */}
+            <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
+              <StockViewer token={token} />
+            </div>
+
+            {/* User profile */}
+            <div className="w-full max-w-6xl bg-white dark:bg-darkBlue2 p-6 rounded-lg shadow-md">
+              <UserProfile token={token} />
+            </div>
+
+            {/* Logout button */}
+            <button
+              className="mt-4 px-4 py-2 bg-accentBlue hover:bg-accentGreen text-white rounded"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+
+          </div>
+        </>
+      )}
       </main>
   
       <Footer />
