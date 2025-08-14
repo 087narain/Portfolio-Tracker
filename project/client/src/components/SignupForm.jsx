@@ -38,32 +38,37 @@ function SignupForm({ onSignup }) {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-10">
-        <h2 className="text-2xl font-bold mb-4">Make an account:</h2>
-
-        {error && <p className="text-red-500 mb-2">{error}</p>}
-
-        <input
+          <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
+            Make an account:
+          </h2>
+      
+          {error && <p className="text-red-500 mb-2">{error}</p>}
+      
+          <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="border p-2 mb-2 w-full"
+            className="border p-2 mb-2 w-full text-black dark:text-white bg-white dark:bg-darkBlue1"
             required
-        />
-
-        <input
+          />
+      
+          <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="border p-2 mb-4 w-full"
+            className="border p-2 mb-4 w-full text-black dark:text-white bg-white dark:bg-darkBlue1"
             required
-        />
-
-        <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded w-full">
+          />
+      
+          <button
+            type="submit"
+            className="bg-blue-600 text-white py-2 px-4 rounded w-full"
+          >
             Finish Signup
-        </button>
-    </form>
+          </button>
+        </form>
     );
 }
 
