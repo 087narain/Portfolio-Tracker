@@ -84,4 +84,6 @@ Full-stack web application to track investment portfolios across multiple asset 
   - Drag-and-drop portfolio ordering.
   - Improved error handling with toast notifications.
 
-
+## Deployment:
+- Currently runs locally with `npm start` for frontend and `./gradlew bootrun` for backend.
+- Production deployment planned using Docker and cloud hosting (AWS or Heroku).
