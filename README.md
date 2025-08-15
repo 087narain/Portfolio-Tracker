@@ -18,6 +18,9 @@ Full-stack web application to track investment portfolios across multiple asset 
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge)
 ![AlphaVantage](https://img.shields.io/badge/AlphaVantage-FF9900?style=for-the-badge)
 
+## Images:
+! [Stock Viewer] (./screenshots/stock.jpg)
+
 ## Features:
 - **Portfolio Management**
   - Create, read, update, and delete portfolios.
