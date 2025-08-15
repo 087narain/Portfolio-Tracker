@@ -56,3 +56,13 @@ Full-stack web application to track investment portfolios across multiple asset 
   - Response data normalsed and processed for visualisation in asset bars and summary components.
 - **Testing**
   - Manual testing conducted for CRUD operations, form validation, API calls, and UI rendering.
+
+## Challenges Faced:
+- **API Rate Limiting**
+  - AlphaVantage free tier limited to 5 requests per minute.
+  - Mitigated by systematically testing at specific times and testing performance using local dummy data.
+- **Dynamic State Management**
+  - Handling multiple portfolios and assets dynamically required careful `useEffect` dependencies.
+  - Prevented infinite loops when updating portfolio values from API.
+- **Responsive UI**
+  - Ensuring consistent layout and dark mode across all components required custom Tailwind classes.
