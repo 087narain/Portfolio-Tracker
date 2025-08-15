@@ -19,7 +19,7 @@ Full-stack web application to track investment portfolios across multiple asset 
 ![AlphaVantage](https://img.shields.io/badge/AlphaVantage-FF9900?style=for-the-badge)
 
 ## Images:
-! [Stock Viewer] (./screenshots/stock.jpg)
+! [Stock Viewer] (./images/stock.jpg)
 
 ## Features:
 - **Portfolio Management**
@@ -87,6 +87,6 @@ Full-stack web application to track investment portfolios across multiple asset 
   - Drag-and-drop portfolio ordering.
   - Improved error handling with toast notifications.
 
-## Deployment:
+## Planned Deployment:
 - Currently runs locally with `npm start` for frontend and `./gradlew bootrun` for backend.
 - Production deployment planned using Docker and cloud hosting (AWS or Heroku).
