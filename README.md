@@ -26,7 +26,7 @@ Full-stack web application to track investment portfolios across multiple asset 
 - **Asset Management**
   - Add, edit, or remove assets within a portfolio.
   - Display key information for each asset (ticker, quantity, purchase price, type, date).
-  - Visualized asset breakdown by type and value.
+  - Visualised asset breakdown by type and value.
 - **Real-Time Data**
   - Integrated AlphaVantage API to fetch 7 fields per stock (Open, High, Low, Price, Volume, Previous Close, Change Percent).
   - Average response time: ~500ms per request.
@@ -39,5 +39,20 @@ Full-stack web application to track investment portfolios across multiple asset 
   - Dark mode toggle and consistent theme using custom fonts (Inter & Poppins).
 - **Performance & UX**
   - Dynamic fetching and rendering of portfolios and assets.
-  - Interactive asset forms and visualizations for decision support.
+  - Interactive asset forms and visualisations for decision support.
   - Error handling and informative user feedback on API or backend failures.
+
+## Methodology:
+- **Backend**
+  - Spring Boot with H2 in-memory database for quick development and testing.
+  - JPA used to manage `Portfolio` and `Asset` entities with relationships.
+  - REST API endpoints structured for portfolios, assets, and real-time stock data.
+- **Frontend**
+  - React app fetches data asynchronously via Axios.
+  - State managed using hooks (`useState`, `useEffect`) for portfolio lists, token, and dark mode.
+  - Reusable components for forms and visualisations ensure maintainability.
+- **API Integration**
+  - AlphaVantage API calls routed through backend for security.
+  - Response data normalsed and processed for visualisation in asset bars and summary components.
+- **Testing**
+  - Manual testing conducted for CRUD operations, form validation, API calls, and UI rendering.
