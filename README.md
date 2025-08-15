@@ -18,8 +18,6 @@ Full-stack web application to track investment portfolios across multiple asset 
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge)
 ![AlphaVantage](https://img.shields.io/badge/AlphaVantage-FF9900?style=for-the-badge)
 
-## Images:
-![Stock Viewer](./images/stock.jpg)
 
 ## Features:
 - **Portfolio Management**
@@ -90,3 +88,6 @@ Full-stack web application to track investment portfolios across multiple asset 
 ## Planned Deployment:
 - Currently runs locally with `npm start` for frontend and `./gradlew bootrun` for backend.
 - Production deployment planned using Docker and cloud hosting (AWS or Heroku).
+
+## Images:
+![Stock Viewer](./images/stock.jpg)
