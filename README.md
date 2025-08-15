@@ -66,3 +66,22 @@ Full-stack web application to track investment portfolios across multiple asset 
   - Prevented infinite loops when updating portfolio values from API.
 - **Responsive UI**
   - Ensuring consistent layout and dark mode across all components required custom Tailwind classes.
+
+## Planned Improvements:
+- **Automated Testing**
+  - Unit and integration tests for backend APIs.
+  - JUnit and React Testing Library for frontend components.
+- **Persistent Database**
+  - Migrate from H2 to PostgreSQL for production deployment.
+- **Enhanced Analytics**
+  - Add historical portfolio trends and asset performance charts (might require AlphaVantage subscription).
+  - Integrate financial ratios for advanced insights.
+- **Real-Time Updates**
+  - WebSocket integration for live stock price updates.
+- **Export & Reporting**
+  - PDF or CSV export of portfolio summaries and performance metrics.
+- **User Experience**
+  - Drag-and-drop portfolio ordering.
+  - Improved error handling with toast notifications.
+
+
