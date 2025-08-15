@@ -19,7 +19,7 @@ Full-stack web application to track investment portfolios across multiple asset 
 ![AlphaVantage](https://img.shields.io/badge/AlphaVantage-FF9900?style=for-the-badge)
 
 ## Images:
-! [Stock Viewer] (./images/stock.jpg)
+![Stock Viewer](./images/stock.jpg)
 
 ## Features:
 - **Portfolio Management**
